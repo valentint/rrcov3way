@@ -79,14 +79,17 @@ Michele Gallo \email{mgallo@unior.it}
     coordinates(cp1, type="principal")
 
     ## Same as above - the centering and scaling is done inside the Parafac procedure
-    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), center=TRUE, scale=TRUE))
+    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), 
+        center=TRUE, scale=TRUE))
 
     ## Robust estimation with robust scaling with median and mad
-    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), center=median, scale=mad, robust=TRUE))
+    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), 
+        center=median, scale=mad, robust=TRUE))
 
     ## Robust estimation with robust scaling with median and Qn (Rowsseuw and Croux, 1993)
     require(robustbase)
-    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), center=median, scale=Qn, robust=TRUE))
+    (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), 
+        center=median, scale=Qn, robust=TRUE))
 }
 \keyword{array}
 \keyword{multivariate}
