@@ -1,0 +1,58 @@
+importFrom("graphics", "abline", "arrows", "axis", "box", "hist",
+         "legend", "lines", "pairs", "par", "points", "rect",
+         "strwidth", "text", "title")
+importFrom("grDevices", "dev.interactive", "palette")
+importFrom("stats", "runif", "median", "mad", "qnorm", "sd", "mahalanobis", "qchisq")
+importFrom("stats", "weights")
+importFrom("stats", "na.omit")
+importFrom("stats", "coef")
+importFrom("stats", "rnorm")
+importFrom("robustbase", "doScale", "Qn", "Sn")
+importFrom("rrcov", "PcaHubert", "PcaClassic", "CovClassic", "getCenter", "getCov", "getLoadings")
+importFrom("ThreeWay", "T3funcrep", "varimcoco")
+importFrom("nnls", "nnls")
+importFrom("pracma", "pinv", "orth")
+##importFrom("pracma", "subspace")
+
+## Import all packages listed as Imports or Depends
+##import(rrcov)
+
+export(
+    Parafac,
+    Tucker3,
+    do3Scale,
+    do3Postprocess,
+    do3Rotate,
+    reflect,
+    reorder,
+    coordinates,
+    krp,
+    congruence,
+    mtrace,
+    permute,
+    toArray,
+    unfold,
+    cp_als,
+    t3_als
+)
+
+##S3 generics
+S3method(print, parafac)
+S3method(print, tucker3)
+S3method(plot, parafac)
+S3method(plot, tucker3)
+S3method(coordinates, parafac)
+S3method(coordinates, tucker3)
+S3method(do3Postprocess, parafac)
+S3method(do3Postprocess, tucker3)
+S3method(do3Scale, default)
+S3method(do3Scale, parafac)
+S3method(do3Scale, tucker3)
+S3method(do3Rotate, tucker3)
+S3method(reflect, parafac)
+S3method(reflect, tucker3)
+S3method(reorder, parafac)
+S3method(reorder, tucker3)
+S3method(weights, parafac)
+S3method(weights, tucker3)
+
