@@ -1,10 +1,13 @@
 2020-02-24  Valentin Todorov  <valentin.todorov@chello.at>
     *
     * DESCRIPTION (Version): 0.2-0
+    *
+    *   Added Readme.MD and development version published on GitHub
+    *
     *   R/Parafac.R, R/Tucker3.R, R/plot-utils.R: added clr transformation - parameter ilr=TRUE/FALSE
     *       in Parafac() and Tucker3() changed to coda.transform=c("none", "ilr", "clr")
     *   R/Parafac.R, function .cutoff.sd() fixed a bug, now Parafac works for ncomp=1 and robust=TRUE.
-    *       actually the issue was in rrcov/PcaHubert and was fixed also there. 
+    *       actually the issue was in rrcov/PcaHubert and was fixed also there.
     *   man/plot-methods.Rd - fixed the description also for the plot for Parafac objects
     *
     *   DESCRIPTION, NAMESPACE and others: All functions which were adapted from ThreeWay are now removed and
@@ -16,13 +19,13 @@
     *   DESCRIPTION, NAMESPACE and others: dependence on rrcov removed, all necessary functions are imported
     *
     *   R\Parafac.R, Tucker3.R: if robust=TRUE and center=TRUE and/or scale=TRUE, robust centering and scaling
-    *       through median and mad is performed. Of course the user can select any robust centering/scaling 
+    *       through median and mad is performed. Of course the user can select any robust centering/scaling
     *       function from the available in robustbase (or elsewhere).
     *
     *   R\Parafac.R, Tucker3.R - the parameter crit was not used always - fixed
     *
 
-    
+
 
 2020-01-14  Valentin Todorov  <valentin.todorov@chello.at>
     *
