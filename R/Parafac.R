@@ -1,13 +1,3 @@
-##  Return:
-##  .Parafac:       list(fit=fit, A=A, B=B, C=C, Xhat=Xfit, RD=RD)
-##  .Parafac.rob:   list(fit=fit, A=Arew, B=Brew, C=Crew, Xhat=Xhat.rew,
-##                      flag=flag, Hset=Hset, iter=iter, RD=out.rd)
-##  .Parafac.ilr:   list(fit=fit, A=A, B=B, Bclr=Bclr, C=C, Zhat=Zfit, RD=RD)
-##  .Parafac.rob.ilr: list(fit=fit, A=Arew, B=Brew, Bclr=Bclr, C=Crew,
-##                      Zhat=Xhat.rew, flag=flag, Hset=Hset,
-##                      iter=iter, RD=out.rd)
-###############################
-##
 Parafac <- function(X, ncomp=2,
     center=FALSE, center.mode=c("A", "B", "C", "AB", "AC", "BC", "ABC"),
     scale=FALSE, scale.mode=c("B", "A", "C"),
@@ -17,8 +7,10 @@ Parafac <- function(X, ncomp=2,
     trace=FALSE)
 {
     call <- match.call()
+
     center.mode <- match.arg(center.mode)
     scale.mode <- match.arg(scale.mode)
+
     coda.transform <- match.arg(coda.transform)
     ilr <- coda.transform != "none"
     if(coda.transform == "clr" & robust)
@@ -30,7 +22,7 @@ Parafac <- function(X, ncomp=2,
     if(crit < 0.5)
         crit <- 1 - crit
 
-    stopifnot(alpha <=1 & alpha >= 0.5)
+    stopifnot(alpha <= 1 & alpha >= 0.5)
 
     if(robust & ilr)
     {
@@ -51,9 +43,8 @@ Parafac <- function(X, ncomp=2,
     else
         stop("Not yet implemented!")
 
-    ## Store in the output object the total sum of squares
-    ret$ss <- sum(X^2)
-
+    ## Total sum of squares, PARAFAC fit and fit percentage:
+    ## ret$ss <- sum(X^2)
     ## ret$fit will be ||X_A - A G_A kron(C',B')||^2 where X_A and G_A denote the matricized (frontal slices) data array and core array
     ## ret$fp is equal to: 100*(ss-ret$fit)/ss
 
@@ -128,6 +119,7 @@ Parafac <- function(X, ncomp=2,
 {
     center.mode <- match.arg(center.mode)
     scale.mode <- match.arg(scale.mode)
+
     di <- dim(X)
     I <- di[1]
     J <- di[2]
@@ -137,31 +129,32 @@ Parafac <- function(X, ncomp=2,
     X <- do3Scale(X, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
     Xwide <- unfold(X)
 
-    modelPar <- cp_als(X, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-    A <- modelPar$A
-    B <- modelPar$B
-    C <- modelPar$C
+    ret <- cp_als(X, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+    A <- ret$A
+    B <- ret$B
+    C <- ret$C
 
-    KR <- krp(C, B)  # Khatri-Rao product
-    Xfitw <- A %*% t(KR)
-    Xfit <- array(Xfitw, c(I,J,K))
-
-    rdsq <- apply((Xwide-Xfitw)^2,1,sum)
-    fit <- sum(rdsq)
+    ## Compute RD and SD with their cutoff values
+    Xfit <- A %*% t(krp(C, B))
+    rdsq <- apply((Xwide - Xfit)^2, 1, sum)        # RD_i = ||X_i-Xhat_i||F;     fit = sum(RD_i^2)
     rd <- sqrt(rdsq)
     cutoff.rd <- .cutoff.rd(rd, crit=crit, robust=FALSE)
-    out.sd <- .cutoff.sd(A, crit=crit, robust=FALSE)
+    sd <- .cutoff.sd(A, crit=crit, robust=FALSE)
+    flag <- rd <= cutoff.rd & sd$sd <= sd$cutoff.sd
+    Xfit <- toArray(Xfit, I, J, K)
 
     ## dimnames back
     nfac <- paste0("F",1:ncomp)
     dimnames(A) <- list(dn[[1]],nfac)
     dimnames(B) <- list(dn[[2]],nfac)
     dimnames(C) <- list(dn[[3]],nfac)
-    dimnames(Xfit) <- list(dn[[1]],dn[[2]],dn[[3]])
-    names(rd) <- dn[[1]]
+    dimnames(Xfit) <- dn
+    names(rd) <- names(sd$sd) <- names(flag) <- dn[[1]]
 
-    ret <- list(fit=modelPar$f, fp=modelPar$fp, A=A, B=B, C=C, Xhat=Xfit, const=modelPar$const,
-        rd=rd, cutoff.rd=cutoff.rd, sd=out.sd$sd, cutoff.sd=out.sd$cutoff.sd, robust=FALSE, coda.transform="none")
+    ret <- list(fit=ret$f, fp=ret$fp, ss=ret$ss, A=A, B=B, C=C, Xhat=Xfit, const=ret$const, iter=ret$iter,
+        rd=rd, cutoff.rd=cutoff.rd, sd=sd$sd, cutoff.sd=sd$cutoff.sd,
+        robust=FALSE, coda.transform="none")
+
     class(ret) <- "parafac"
     ret
 }
@@ -175,12 +168,10 @@ Parafac <- function(X, ncomp=2,
     center.mode <- match.arg(center.mode)
     scale.mode <- match.arg(scale.mode)
 
-    ## ncomp is the number of components
     di <- dim(X)
     I <- di[1]
     J <- di[2]
     K <- di[3]
-
     dn <- dimnames(X)
 
     ## If centering and/or scaling were requested, but no (robust) function
@@ -191,99 +182,109 @@ Parafac <- function(X, ncomp=2,
         scale <- mad
 
     X <- do3Scale(X, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
+    ssx <- sum(X^2)
     Xwide <- unfold(X)
 
-    Ahat <- matrix(0, dim(X)[1], ncomp)
+    Ahat <- matrix(0, I, ncomp)
 
-    ## define num. of outliers the algorithm should resists
-    h <- round(alpha*dim(X)[1])
+    ## define number of outliers the algorithm should resists
+    h <- round(alpha*I)
 
-    ## Step 1 RobPCA XA
-    outrobpca <- PcaHubert(Xwide, k=ncomp.rpca, kmax=ncol(Xwide), alpha=alpha, mcd=FALSE)
+    ## Step 1 RobPCA of XA
+    if(trace)
+        cat("\nStep 1. Perform robust PCA on the unfolded matrix.")
+
+    outrobpca <- PcaHubert(Xwide, k=ncomp.rpca, kmax=ncol(Xwide), alpha=alpha, mcd=FALSE, trace=trace)
     Hset <- sort(sort(outrobpca@od, index.return=TRUE)$ix[1:h])
-    Xhat <-Xwide[Hset,]
+    Xhat <- Xwide[Hset,]
     fitprev <- 0
     changeFit <- 1 + conv
     iter <- 0
+
     while (changeFit > conv & iter <= robiter)
     {
-        iter <- iter+1
+        iter <- iter + 1
 
         ##  Step 2 - PARAFAC analysis
-        modelPar <- cp_als(Xhat, h, J, K, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-        Ah<-modelPar$A
-        Bh<-modelPar$B
-        Ch<-modelPar$C
+        ret <- cp_als(Xhat, h, J, K, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+        Ah <- ret$A
+        Bh <- ret$B
+        Ch <- ret$C
 
         ## Step 3 - Fit the model
-        KR <- krp(Ch, Bh)  # Khatri-Rao product
-        for(i in 1:dim(X)[1])
-        {
+        KR <- krp(Ch, Bh)                   # Khatri-Rao product
+        for(i in 1:I) {
             vJKx1 <- matrix(X[i,,], 1, J*K)
             Ahat[i,] <- pracma::pinv(KR) %*% t(vJKx1)
         }
+
+        ## The above is equivallent to the following:
+        ##  Ahat <- Xwide %*% t(pracma::pinv(KR))
+
         Xfit <- Ahat %*% t(KR)
 
         ##  Step 4  - Computation of the residual distances
-        rdsq <- apply((Xwide-Xfit)^2, 1, sum)
+        rdsq <- apply((Xwide - Xfit)^2, 1, sum)
         rd <- sqrt(rdsq)
         Hset <- sort(sort(rdsq, index.return=TRUE)$ix[1:h])
         fit <- sum(rdsq[Hset])
-        Xhat <- Xwide[Hset,]#Xunf
+        Xhat <- Xwide[Hset,]
 
         ##  Step 5  Fit of the model
         changeFit <- if(fitprev == 0) 1 + conv else abs(fit-fitprev)/fitprev
         fitprev <- fit
     }
 
-    ## reweighting
-    cutoffOD <- .cutoff.rd(rd, crit=crit, h)
-    flag <- rd <= cutoffOD
+    ## Reweighting
+    cutoff.rd <- .cutoff.rd(rd, crit=crit, h)
+    flag <- rd <= cutoff.rd
     Xflag <- X[flag,,]
-    dim <- dim(Xflag)[1]
-    Xflag_unf <- matrix(Xflag, dim, J*K)
-    modelParrew <- cp_als(Xflag_unf, dim, J, K, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-    Arew <- modelParrew$A
-    Brew <- modelParrew$B
-    Crew <- modelParrew$C
+    Xflag_wide <- unfold(Xflag)
+    ret <- cp_als(Xflag_wide, nrow(Xflag_wide), J, K, ncomp=ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+    Arew <- ret$A
+    Brew <- ret$B
+    Crew <- ret$C
 
-    KRrew <- krp(Crew, Brew)  # Khatri-Rao product
-    Arew <- matrix(0,dim(X)[1],ncomp)
-    for(i in 1:dim(X)[1])
-    {
-        vJKx1 <- matrix(X[i,,],1,J*K)#X
-        Arew[i,] <- pracma::pinv(KRrew)%*%t(vJKx1)
-    }
-    Xfitrew <- Arew%*%t(KRrew)
-    odsqrew <- apply((Xwide-Xfitrew)^2, 1, sum) #Xunf
-    out.rd <- odrew <- sqrt(odsqrew)
-    cutoffOD <- .cutoff.rd(odrew, crit=crit, h)
-    flag <- odrew <= cutoffOD
-    Xhat.rew <- array(Xfitrew, c(I,J,K))
+    KRrew <- krp(Crew, Brew)            # Khatri-Rao product
 
-    for(i in 1:ncomp)
-    {
-        Arew[,i]<-Arew[,i]*norm(as.matrix(Brew[,i]),type="F")*norm(as.matrix(Crew[,i]),type="F")
-        Brew[,i]<-Brew[,i]/norm(as.matrix(Brew[,i]),type="F")
-        Crew[,i]<-Crew[,i]/norm(as.matrix(Crew[,i]),type="F")
+    Arew <- matrix(0, I, ncomp)
+    for(i in 1:I) {
+        vJKx1 <- matrix(X[i,,], 1, J*K)
+        Arew[i,] <- pracma::pinv(KRrew) %*% t(vJKx1)
     }
 
-    out.sd <- .cutoff.sd(Arew, alpha=alpha, crit=crit, robust=TRUE)
+    ## The above is equivallent to the following:
+    ##  Arew <- Xwide %*% t(pracma::pinv(KRrew))
+
+    Xfit <- Arew %*%t (KRrew)
+    rdsq <- apply((Xwide - Xfit)^2, 1, sum)
+    rd <- sqrt(rdsq)
+    cutoff.rd <- .cutoff.rd(rd, crit=crit, h)
+    fit <- sum(rdsq[rd <= cutoff.rd])
+    fp <- 100*(1-fit/ssx)
+
+    for(i in 1:ncomp) {
+        Arew[,i] <- Arew[,i]*norm(as.matrix(Brew[,i]),type="F")*norm(as.matrix(Crew[,i]),type="F")
+        Brew[,i] <- Brew[,i]/norm(as.matrix(Brew[,i]),type="F")
+        Crew[,i] <- Crew[,i]/norm(as.matrix(Crew[,i]),type="F")
+    }
+
+    sd <- .cutoff.sd(Arew, alpha=alpha, crit=crit, robust=TRUE)
+    flag <- rd <= cutoff.rd & sd$sd <= sd$cutoff.sd
+    Xfit <- toArray(Xfit, I, J, K)
 
     ## dimnames back
-    nfac <- paste0("F",1:ncomp)
-    dimnames(Arew) <- list(dn[[1]],nfac)
-    dimnames(Brew) <- list(dn[[2]],nfac)
-    dimnames(Crew) <- list(dn[[3]],nfac)
-    dimnames(Xhat.rew) <- list(dn[[1]],dn[[2]],dn[[3]])
-    names(flag) <- dn[[1]]
-    names(out.rd) <- dn[[1]]
+    nfac <- paste0("F", 1:ncomp)
+    dimnames(Arew) <- list(dn[[1]], nfac)
+    dimnames(Brew) <- list(dn[[2]], nfac)
+    dimnames(Crew) <- list(dn[[3]], nfac)
+    dimnames(Xfit) <- dn
+    names(rd) <- names(sd$sd) <- names(flag) <- dn[[1]]
 
-    res <- list(fit=fit, fp=modelPar$fp, A=Arew, B=Brew, C=Crew, Xhat=Xhat.rew, const=modelParrew$const,
+    res <- list(fit=fit, fp=fp, ss=ssx, A=Arew, B=Brew, C=Crew, Xhat=Xfit, const=ret$const,
                 flag=flag, Hset=Hset, iter=iter, alpha=alpha,
-                rd=out.rd, cutoff.rd=cutoffOD, sd=out.sd$sd, cutoff.sd=out.sd$cutoff.sd,
-                pcaobj=outrobpca,
-                robust=TRUE, coda.transform="none")
+                rd=rd, cutoff.rd=cutoff.rd, sd=sd$sd, cutoff.sd=sd$cutoff.sd,
+                pcaobj=outrobpca, robust=TRUE, coda.transform="none")
 
     class(res) <- "parafac"
     res
@@ -304,10 +305,9 @@ Parafac <- function(X, ncomp=2,
     I <- di[1]
     J <- di[2]
     K <- di[3]
-
     dn <- dimnames(X)
 
-    Xarrayilr <- if(coda.transform == "ilr") ilrArray(X)
+    Xilr <- if(coda.transform == "ilr") ilrArray(X)
                  else if(coda.transform == "clr") clrArray(X)
                  else NULL
 
@@ -315,23 +315,24 @@ Parafac <- function(X, ncomp=2,
         J <- J - 1
 
     ## centering the compositions
-    Xarrayilr <- do3Scale(Xarrayilr, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
-    Xwideilr <- unfold(Xarrayilr)
+    Xilr <- do3Scale(Xilr, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
+    Xwide <- unfold(Xilr)
 
-    modelPar <- cp_als(Xwideilr, I, J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-    A <- modelPar$A
-    B <- modelPar$B
-    C <- modelPar$C
+    ret <- cp_als(Xwide, I, J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+    A <- ret$A
+    B <- ret$B
+    C <- ret$C
 
-    KR <- krp(C, B)  # Khatri-Rao product
-    Zfitw <- A%*%t(KR)
-    Zfit <- array(Zfitw,c(I,J,K))
 
-    rdsq <- apply((Xwideilr-Zfitw)^2,1,sum)
+    ## Compute RD and SD with their cutoff values
+    Xfit <- A %*% t(krp(C, B))
+    rdsq <- apply((Xwide - Xfit)^2, 1, sum)
     fit <- sum(rdsq)
-    RD <- sqrt(rdsq)
-    cutoff.rd <- .cutoff.rd(RD, crit=crit, robust=FALSE)
-    out.sd <- .cutoff.sd(A, crit=crit, robust=FALSE)
+    rd <- sqrt(rdsq)
+    cutoff.rd <- .cutoff.rd(rd, crit=crit, robust=FALSE)
+    sd <- .cutoff.sd(A, crit=crit, robust=FALSE)
+    flag <- rd <= cutoff.rd & sd$sd <= sd$cutoff.sd
+    Xfit <- toArray(Xfit, I, J, K)
 
     ## Back-transformation of loadings to clr
     if(coda.transform == "clr")     #do nothing
@@ -350,16 +351,18 @@ Parafac <- function(X, ncomp=2,
 
     ## dimnames back
     znames <- paste0("Z", 1:dim(B)[1])
-    nfac <- paste0("F",1:ncomp)
-    dimnames(A) <- list(dn[[1]],nfac)
-    dimnames(B) <- if(coda.transform == "clr") list(dn[[2]],nfac) else list(znames,nfac)
-    dimnames(Bclr) <- list(dn[[2]],nfac)
-    dimnames(C) <- list(dn[[3]],nfac)
-    dimnames(Zfit) <- list(dn[[1]],znames,dn[[3]])
-    names(RD) <- dn[[1]]
+    nfac <- paste0("F", 1:ncomp)
+    dimnames(A) <- list(dn[[1]], nfac)
+    dimnames(B) <- if(coda.transform == "clr") list(dn[[2]], nfac) else list(znames, nfac)
+    dimnames(Bclr) <- list(dn[[2]], nfac)
+    dimnames(C) <- list(dn[[3]], nfac)
+    dimnames(Xfit) <- list(dn[[1]], znames, dn[[3]])
+    names(rd) <- names(sd$sd) <- names(flag) <- dn[[1]]
 
-    res <- list(fit=fit, fp=modelPar$fp, A=A, B=B, Bclr=Bclr, C=C, Zhat=Zfit, const=modelPar$const,
-        rd=RD, cutoff.rd=cutoff.rd, sd=out.sd$sd, cutoff.sd=out.sd$cutoff.sd, robust=FALSE, coda.transform=coda.transform)
+    res <- list(fit=ret$f, fp=ret$fp, ss=ret$ss, A=A, B=B, Bclr=Bclr, C=C, Xhat=Xfit, const=ret$const, iter=ret$iter,
+        rd=rd, cutoff.rd=cutoff.rd, sd=sd$sd, cutoff.sd=sd$cutoff.sd,
+        robust=FALSE, coda.transform=coda.transform)
+
     class(res) <- "parafac"
     res
 }
@@ -374,15 +377,13 @@ Parafac <- function(X, ncomp=2,
     scale.mode <- match.arg(scale.mode)
     coda.transform <- match.arg(coda.transform)
 
-    ## ncomp is the number of components
     di <- dim(X)
     I <- di[1]
     J <- di[2]
     K <- di[3]
-
     dn <- dimnames(X)
 
-    Xarrayilr <- ilrArray(X)
+    Xilr <- ilrArray(X)
     J <- J - 1
 
     ## If centering and/or scaling were requested, but no (robust) function
@@ -393,18 +394,19 @@ Parafac <- function(X, ncomp=2,
         scale <- mad
 
     ## centering the compositions
-    Xarrayilr <- do3Scale(Xarrayilr, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
-    Xwideilr <- unfold(Xarrayilr)
+    Xilr <- do3Scale(Xilr, center=center, center.mode=center.mode, scale=scale, scale.mode=scale.mode)
+    ssx <- sum(Xilr^2)
+    Xwide <- unfold(Xilr)
 
-    Ahat<-matrix(0,dim(X)[1],ncomp)
+    Ahat <- matrix(0,dim(X)[1],ncomp)
 
-    #define num. of outliers the algorithm should resists
+    ## define number of outliers the algorithm should resists
     h <- round(alpha * dim(X)[1])
 
     ## Step 1 RobPCA XA
-    outrobpca <- PcaHubert(Xwideilr, k=ncomp.rpca, kmax=ncol(Xwideilr), alpha=alpha, mcd=FALSE)
+    outrobpca <- PcaHubert(Xwide, k=ncomp.rpca, kmax=ncol(Xwide), alpha=alpha, mcd=FALSE)
     Hset <- sort(sort(outrobpca@od, index.return=TRUE)$ix[1:h])
-    Xhat <-Xwideilr[Hset,]
+    Xhat <-Xwide[Hset,]
     fitprev <- 0
     changeFit <- 1 + conv
     iter <- 0
@@ -412,59 +414,52 @@ Parafac <- function(X, ncomp=2,
         iter <- iter+1
 
         ## Step 2 - PARAFAC analysis
-        modelPar <- cp_als(Xhat, h, J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-        Ah <- modelPar$A
-        Bh <- modelPar$B
-        Ch <- modelPar$C
+        ret <- cp_als(Xhat, h, J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+        Ah <- ret$A
+        Bh <- ret$B
+        Ch <- ret$C
 
         KR <- krp(Ch, Bh)  # Khatri-Rao product
         for(i in 1:dim(X)[1]) {
-            vJKx1 <- matrix(Xarrayilr[i, ,], 1, J*K)
+            vJKx1 <- matrix(Xilr[i, ,], 1, J*K)
             Ahat[i,] <- pracma::pinv(KR) %*% t(vJKx1)
         }
         Xfit <- Ahat %*%t (KR)
 
         ## Step 4  Computation of the rd
-        rdsq <- apply((Xwideilr-Xfit)^2, 1, sum)
+        rdsq <- apply((Xwide - Xfit)^2, 1, sum)
         rd <- sqrt(rdsq)
         Hset <- sort(sort(rdsq, index.return=TRUE)$ix[1:h])
         fit <- sum(rdsq[Hset])
-        Xhat <- Xwideilr[Hset,]#Xunf
+        Xhat <- Xwide[Hset,]
 
         ## Step 5  Fit of the model
-        if (fitprev == 0) {
-            changeFit <- 1 + conv
-        } else {
-            changeFit <- abs(fit-fitprev)/fitprev
-        }
+        changeFit <- if(fitprev == 0) 1 + conv else abs(fit-fitprev)/fitprev
         fitprev <- fit
     }
 
     ## Reweighting
-    cutoffOD <- .cutoff.rd(rd, crit=crit, h)
-    out.rd <- rd
-    flag <- (out.rd <= cutoffOD)
-    Xflag <- Xarrayilr[flag,,] #X
-    dim <- dim(Xflag)[1]
-    Xflag_unf <- matrix(Xflag,dim,J*K)
-    modelParrew <- cp_als(Xflag_unf, dim, J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
-    Arew <- modelParrew$A
-    Brew <- modelParrew$B
-    Crew <- modelParrew$C
+    cutoff.rd <- .cutoff.rd(rd, crit=crit, h)
+    flag <- rd <= cutoff.rd
+    Xflag <- Xilr[flag,,]
+    Xflag_wide <- unfold(Xflag)
+    ret <- cp_als(Xflag_wide, nrow(Xflag_wide), J, K, ncomp, const=const, conv=conv, start=start, maxit=maxit, trace=trace)
+    Arew <- ret$A
+    Brew <- ret$B
+    Crew <- ret$C
 
-    KRrew <- krp(Crew, Brew)  # Khatri-Rao product
-    Arew <- matrix(0, dim(X)[1], ncomp)
-    for(i in 1:dim(X)[1])
-    {
-        vJKx1 <- matrix(Xarrayilr[i, ,], 1, J*K)#X
-        Arew[i,] <- pracma::pinv(KRrew) %*%t (vJKx1)
+    KR <- krp(Crew, Brew)  # Khatri-Rao product
+    Arew <- matrix(0, I, ncomp)
+    for(i in 1:I) {
+        vJKx1 <- matrix(Xilr[i, ,], 1, J*K)
+        Arew[i,] <- pracma::pinv(KR) %*%t (vJKx1)
     }
-    Xfitrew <- Arew %*% t(KRrew)
-    odsqrew <- apply((Xwideilr-Xfitrew)^2, 1, sum) #Xunf
-    out.rd <- sqrt(odsqrew)
-    cutoffOD <- .cutoff.rd(out.rd, crit=crit, h)
-    flag <- out.rd <= cutoffOD
-    Xhat.rew <- array(Xfitrew, c(I, J, K))
+    Xfit <- Arew %*% t(KR)
+    rdsq <- apply((Xwide - Xfit)^2, 1, sum)
+    rd <- sqrt(rdsq)
+    cutoff.rd <- .cutoff.rd(rd, crit=crit, h)
+    fit <- sum(rdsq[rd <= cutoff.rd])
+    fp <- 100*(1-fit/ssx)
 
     for(i in 1:ncomp) {
         Arew[,i] <- Arew[,i] * norm(as.matrix(Brew[,i]), type="F") * norm(as.matrix(Crew[,i]), type="F")
@@ -481,7 +476,9 @@ Parafac <- function(X, ncomp=2,
     }
     Bclr <- V %*% Brew
 
-    out.sd <- .cutoff.sd(Arew, alpha=alpha, crit=crit, robust=TRUE)
+    sd <- .cutoff.sd(Arew, alpha=alpha, crit=crit, robust=TRUE)
+    flag <- rd <= cutoff.rd & sd$sd <= sd$cutoff.sd
+    Xfit <- toArray(Xfit, I, J, K)
 
     ## dimnames back
     nfac <- paste0("F", 1:ncomp)
@@ -490,15 +487,13 @@ Parafac <- function(X, ncomp=2,
     dimnames(Brew) <- list(znames, nfac)
     dimnames(Bclr) <- list(dn[[2]], nfac)
     dimnames(Crew) <- list(dn[[3]], nfac)
-    dimnames(Xhat.rew) <- list(dn[[1]], znames, dn[[3]])
-    names(flag) <- dn[[1]]
-    names(out.rd) <- dn[[1]]
+    dimnames(Xfit) <- list(dn[[1]], znames, dn[[3]])
+    names(rd) <- names(sd$sd) <- names(flag) <- dn[[1]]
 
-    res <- list(fit=fit, fp=modelPar$fp, A=Arew, B=Brew, Bclr=Bclr, C=Crew, Zhat=Xhat.rew, const=modelParrew$const,
+    res <- list(fit=fit, fp=fp, ss=ssx, A=Arew, B=Brew, Bclr=Bclr, C=Crew, Xhat=Xfit, const=ret$const,
             flag=flag, Hset=Hset, iter=iter, alpha=alpha,
-            rd=out.rd, cutoff.rd=cutoffOD, sd=out.sd$sd, cutoff.sd=out.sd$cutoff.sd,
-            pcaobj=outrobpca,
-            robust=TRUE, coda.transform=coda.transform)
+            rd=rd, cutoff.rd=cutoff.rd, sd=sd$sd, cutoff.sd=sd$cutoff.sd,
+            pcaobj=outrobpca, robust=TRUE, coda.transform=coda.transform)
 
     class(res) <- "parafac"
     res
@@ -542,7 +537,8 @@ print.parafac <- function(x, ...)
 
     ncomp <- dim(x$A)[2]
 
-    cat("\nPARAFAC analysis with ", ncomp, " components.\nFit value:", round(x$fp,2), "%\n")
+    cat("\nPARAFAC analysis with ", ncomp, " components.\nFit value:", x$fit,
+        "\nFit percentage:", round(x$fp,2), "%\n")
     msg <- ""
     if(x$robust)
         msg <- paste0(msg, "Robust")

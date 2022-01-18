@@ -13,8 +13,8 @@
 ##
 ##  start: svd, random or given matrices A, B and C
 ##
-##  roxygen2::roxygenise("C:/projects/statproj/R/rrcov3way")
-##
+##  roxygen2::roxygenise("c:/Users/valen/OneDrive/MyRepo/R/rrcov3way", load_code=roxygen2:::load_installed, clean=TRUE)
+
 
 #'  Alternating Least Squares (ALS) for Candecomp/Parafac (CP)
 #'
@@ -82,6 +82,8 @@
 #'  where \eqn{D(k)} is a diagonal matrix holding the \code{k}-th row of \code{C}.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' ## Example with the OECD data
 #'  data(elind)
 #'  dim(elind)
@@ -93,7 +95,7 @@
 #'
 #'  res <- cp_als(elind, ncomp=3, const="nonneg")
 #'  res$A
-#'
+#' }
 #' @export
 #' @author Valentin Todorov, \email{valentin.todorov@@chello.at}
 #'
@@ -110,7 +112,6 @@ cp_als <- function (X, n, m, p, ncomp, const="none", start="random", conv=1e-6, 
         m <- dim(X)[2]
         p <- dim(X)[3]
 
-        ## Matricised as in multiway
         Xb <- matrix(aperm(X, perm=c(2,1,3)), m, n*p)
         Xc <- matrix(aperm(X, perm=c(3,1,2)), p, n*m)
     }else if(length(dim(X)) == 2)
@@ -123,7 +124,6 @@ cp_als <- function (X, n, m, p, ncomp, const="none", start="random", conv=1e-6, 
         if(m*p != dim(Xa)[2])
             stop("'m*p' must be equal to the fsecond dimension of the matrix 'X'!")
 
-        ## Matricised as in multiway
         data <- toArray(Xa, n, m, p)
         Xb <- matrix(aperm(data, perm=c(2,1,3)), m, n*p)
         Xc <- matrix(aperm(data, perm=c(3,1,2)), p, n*m)
@@ -310,6 +310,6 @@ cp_als <- function (X, n, m, p, ncomp, const="none", start="random", conv=1e-6, 
         cat(paste("Fit percentage is", round(fp, 2), "%", sep = " "), fill = TRUE)
     }
 
-    out <- list(A=A, B=B, C=C, f=f, fp=fp, iter=iter, tripcos=tripcos, mintripcos=mintripcos, ftiter=ftiter, const=const)
+    out <- list(A=A, B=B, C=C, f=f, fp=fp, ss=ssx, iter=iter, tripcos=tripcos, mintripcos=mintripcos, ftiter=ftiter, const=const)
     out
 }

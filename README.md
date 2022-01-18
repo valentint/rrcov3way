@@ -1,7 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rrcov3way
+# rrcov3way: Robust Methods for Multiway Data Analysis
+
+[![CRAN
+version](https://www.r-pkg.org/badges/version/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
+[![downloads](https://cranlogs.r-pkg.org/badges/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 
 The package provides methods for multiway data analysis by means of
 *Parafac* and *Tucker 3* models. Robust versions (Engelen and Hubert
@@ -73,7 +77,8 @@ rownames(elind[,1,])
 colnames(elind[,1,])
 #> [1] "78" "79" "80" "82" "83" "84" "85"
 
-##  First of all we center and scale the data, using the default procedures for centering and scaling.
+##  First of all we center and scale the data, using the default procedures 
+##  for centering and scaling.
 
 elind <- do3Scale(elind, center=TRUE, scale=TRUE)
 
@@ -89,6 +94,7 @@ res
 #> 
 #> 
 #> PARAFAC analysis with  3  components.
-#> Fit value: 57.97 %
+#> Fit value: 2.522052 
+#> Fit percentage: 57.97 %
 #> 
 ```

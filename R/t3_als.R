@@ -1,37 +1,21 @@
-##
-##  X is an n x m x p array
-##
-##  - the function ALS() expects a n x m*p matrix
-##
-t3_als <- function(X, P=2, Q=2, R=2, conv=1e-10, crit=0.975)
+t3_als1 <- function(X, I, J, K, P, Q, R, start, conv=1e-10)
 {
-    di <- dim(X)
-    n <- di[1]
-    m <- di[2]
-    p <- di[3]
-    dn <- dimnames(X)
 
-    Y <- unfold(X)     # default mode is "A", returns n x m*p matrix
-    tt <- ThreeWay::T3funcrep(Y, n, m, p, P, Q, R, start=0, conv=conv)
+    ssx <- sum(X^2)
 
-    ## Compute orthogonal distances; flag observations as outliers
-    Xfit <- tt$A %*% tt$H %*% t(kronecker(tt$C, tt$B))
-    out.Xhat <- array(Xfit, c(n, m, p))
-    odsq <- apply((Y-Xfit)^2, 1, sum)
-    RD <- sqrt(odsq)
-    critRD <- .cutoff.rd(RD, crit=crit, robust=FALSE)   # (mean(RD^(2/3)) + sd(RD^(2/3)) * qnorm(crit))^(3/2)
-    flag <- RD <= critRD
+    if(!is.list(start) && length(start) != 1)
+        stop("'start' must be either a list with elements A, B, C and GA, or a single character - one of 'random' or 'svd'!")
 
-    ## dimnames back
-    dimnames(tt$A) <- list(dn[[1]], paste("F", 1:P, sep=""))
-    dimnames(tt$B) <- list(dn[[2]], paste("F", 1:Q, sep=""))
-    dimnames(tt$C) <- list(dn[[3]], paste("F", 1:R, sep=""))
-    dimnames(tt$H) <- list(paste("F", 1:P, sep=""), paste("F", 1:(Q*R), sep=""))
-    names(RD) <- dn[[1]]
-    names(flag) <- dn[[1]]
+    if(!is.list(start) && !(start %in% c("random", "svd")))
+        stop("'start' must be either a list with elements A, B, C and GA, or one of 'random' or 'svd'!")
 
-    ret <- list(fit=tt$f, fp=tt$fp,
+    tt <- if(is.list(start))
+              ThreeWay::T3funcrep(X, I, J, K, P, Q, R, start=2, conv=conv, A=start$A, B=start$B, C=start$C, H=start$GA)
+          else
+              ThreeWay::T3funcrep(X, I, J, K, P, Q, R, start=if(start=="svd") 0 else 1, conv=conv)
+
+    ret <- list(f=tt$f, fp=tt$fp, ss=ssx,
                 A=tt$A, B=tt$B, C=tt$C, GA=tt$H,
                 La=tt$La, Lb=tt$Lb, Lc=tt$Lc,
-                iter=tt$iter, flag=flag, rd=RD, cutoff.rd=critRD)
+                iter=tt$iter)
 }

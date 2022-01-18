@@ -73,7 +73,7 @@ Michele Gallo \email{mgallo@unior.it}
     
     cp$B
     cp1 <- do3Postprocess(cp, reflectB=-1)      # change the sign of all components of B
-    cp$B
+    cp1$B
     weights(cp1)
     coordinates(cp1)
     coordinates(cp1, type="principal")
@@ -86,7 +86,7 @@ Michele Gallo \email{mgallo@unior.it}
     (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), 
         center=median, scale=mad, robust=TRUE))
 
-    ## Robust estimation with robust scaling with median and Qn (Rowsseuw and Croux, 1993)
+    ## Robust estimation with robust scaling with median and Qn (Rousseeuw and Croux, 1993)
     require(robustbase)
     (cp1 <- Parafac(elind, ncomp=3, const=c("orth", "none", "none"), 
         center=median, scale=Qn, robust=TRUE))

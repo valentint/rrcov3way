@@ -1,4 +1,5 @@
 \name{Kojima}
+\alias{Kojima}
 \alias{Kojima.boys}
 \alias{Kojima.girls}
 \docType{data}

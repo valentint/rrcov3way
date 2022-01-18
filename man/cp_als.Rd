@@ -83,6 +83,8 @@ The argument \code{const} should be a three element character vector.
  where \eqn{D(k)} is a diagonal matrix holding the \code{k}-th row of \code{C}.
 }
 \examples{
+
+\dontrun{
 ## Example with the OECD data
  data(elind)
  dim(elind)
@@ -94,7 +96,7 @@ The argument \code{const} should be a three element character vector.
 
  res <- cp_als(elind, ncomp=3, const="nonneg")
  res$A
-
+}
 }
 \references{
 Harshman, R.A. (1970). Foundations of Parafac procedure:

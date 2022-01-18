@@ -31,9 +31,7 @@ export(
     mtrace,
     permute,
     toArray,
-    unfold,
-    cp_als,
-    t3_als
+    unfold
 )
 
 ##S3 generics

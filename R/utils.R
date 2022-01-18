@@ -261,6 +261,7 @@ do3Scale.parafac <- function(x, renorm.mode=c("A", "B", "C"), ...)
 do3Scale.default <- function(x, center=FALSE, scale=FALSE, center.mode=c("A", "B", "C", "AB", "AC", "BC", "ABC"), scale.mode=c("B", "A", "C"), only.data=TRUE, ...)
 {
     ss <- function(x) sqrt(sum(x^2))
+
     center.mode <- match.arg(center.mode)
     cmode <- vector("character", length=3)
     for(i in 1:nchar(center.mode))
@@ -498,6 +499,7 @@ weights.parafac <- function(object, ...)
 {
     if(!is.orthogonal(object$A) && !is.orthogonal(object$B) && !is.orthogonal(object$C))
         warning("It is not possible to obtain a partitioning of the total variability by components since none of the modes has orthogonal components!")
+
     object$GA^2/object$ss
 }
 

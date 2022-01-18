@@ -67,15 +67,17 @@ An object of class "parafac" which is basically a list with components:
 \item{Bclr}{Orthogonal loading matrix for the B-mode, clr transformed. 
     Available only if coda.transform="ilr", otherwise NULL}
 \item{C}{Orthogonal loading matrix for the C-mode}
-\item{Xhat}{Robust reconstructed array}
+\item{Xhat}{(Robustly) reconstructed array}
 \item{const}{Optional constraints (same as the input parameter)}
 \item{iter}{Number of iterations}
-\item{RD}{Residual distances}
-\item{flag}{The observations whose residual distance \code{RD} is larger than cutoff.RD can be 
-    considered as outliers and receive a flag equal to zero. 
+\item{rd}{Residual distances}
+\item{sd}{Score distances}
+\item{flag}{The observations whose residual distance \code{rd} is larger than \code{cutoff.rd} or 
+    score distance \code{sd} is larger than \code{cutoff.sd}, can be 
+    considered outliers and receive a flag equal to zero. 
     The regular observations receive a flag 1}
 \item{robust}{The paramater \code{robust}, whether robust method is used or not}    
-\item{coda.transform}{The paramater \code{coda.transform}, whether ilr transformation is used or not}    
+\item{coda.transform}{Which coda transformation is used, can be \code{coda.transform=c("none", "ilr", "clr")}.}    
 }
 \references{
 	Harshman, R.A. (1970). Foundations of Parafac procedure: 
@@ -133,7 +135,7 @@ plot(res, which="comp", mode="A", main="Component plot, A-mode")
 ## Plot Orthonormalized B-mode component plot
 plot(res, which="comp", mode="B", main="Component plot, B-mode")
 
-## Plot Orthonormalized B-mode component plot
+## Plot Orthonormalized C-mode component plot
 plot(res, which="comp", mode="C", main="Component plot, C-mode")
 
 

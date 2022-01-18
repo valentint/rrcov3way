@@ -2,12 +2,19 @@
     *
     * DESCRIPTION (Version): 0.2-0
     *
-    *   Added Readme.MD and development version published on GitHub
+    *   
+    *   Added Readme.md and development version published on GitHub
+    *
+    *   R/Parafac.R, R/Tucker3.R: fixed a bug in the computation of the returned fit and fit percentage values.
+    *
+    *   R/Tucker3.R: initialization option implemented 
     *
     *   R/Parafac.R, R/Tucker3.R, R/plot-utils.R: added clr transformation - parameter ilr=TRUE/FALSE
     *       in Parafac() and Tucker3() changed to coda.transform=c("none", "ilr", "clr")
+    *
     *   R/Parafac.R, function .cutoff.sd() fixed a bug, now Parafac works for ncomp=1 and robust=TRUE.
     *       actually the issue was in rrcov/PcaHubert and was fixed also there.
+    *
     *   man/plot-methods.Rd - fixed the description also for the plot for Parafac objects
     *
     *   DESCRIPTION, NAMESPACE and others: All functions which were adapted from ThreeWay are now removed and

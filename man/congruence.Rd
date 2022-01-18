@@ -36,9 +36,11 @@ Find the Tucker's coefficient of congruence between two sets of factor loadings.
  congruence coefficients between all pairs of columns of the two matrices.
 }
 \examples{
+ require(rrcov)
+
  data(delivery, package="robustbase")
- X <- rrcov::getLoadings(rrcov::PcaClassic(delivery))
- Y <- rrcov::getLoadings(rrcov::PcaHubert(delivery, k=3))
+ X <- getLoadings(PcaClassic(delivery))
+ Y <- getLoadings(PcaHubert(delivery, k=3))
  round(congruence(X,Y),3)
 
 }
