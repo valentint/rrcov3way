@@ -42,7 +42,7 @@ toArray <- function(x, n, m, r, mode=c("A", "B", "C")) {
         X <- array(0, c(n, m, p))
         for(k in 1:p)
             for(j in 1:m)
-                X[, j, k] = x[, (k - 1) * m + j]
+                X[, j, k] <- x[, (k - 1) * m + j]
         X
     }
 
@@ -107,13 +107,13 @@ tall2wide <- function(Xtall, I, J, K)
 .ilrV <- function(x)
 {
     dn <- dimnames(x)
-    x.ilr = matrix(NA, nrow = nrow(x), ncol = ncol(x) - 1)
+    x.ilr <- matrix(NA, nrow = nrow(x), ncol = ncol(x) - 1)
     if(!is.null(dn) && is.list(dn))
         rownames(x.ilr) <- dn[[1]]
     colnames(x.ilr) <- paste0("Z", 1:(ncol(x) - 1))
-    for (i in 1:ncol(x.ilr))
+    for (i in seq_len(ncol(x.ilr)))
     {
-        x.ilr[, i] = sqrt((i)/(i + 1)) * log(((apply(as.matrix(x[,1:i]), 1, prod))^(1/i))/(x[, i + 1]))
+        x.ilr[, i] <- sqrt((i)/(i + 1)) * log(((apply(as.matrix(x[,1:i]), 1, prod))^(1/i))/(x[, i + 1]))
     }
 
     if (is.data.frame(x))
@@ -276,7 +276,7 @@ do3Scale.default <- function(x, center=FALSE, scale=FALSE, center.mode=c("A", "B
 
     if(!is.logical(center) || center == TRUE)
     {
-        for(i in 1:length(cmode))
+        for(i in seq_len(length(cmode)))
         {
             cmi <- cmode[i]
             if(nchar(cmi) > 0)

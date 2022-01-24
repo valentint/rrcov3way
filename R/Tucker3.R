@@ -5,7 +5,7 @@ Tucker3 <- function(X, P=2, Q=2, R=2,
     robust=FALSE, coda.transform=c("none", "ilr", "clr"),
     ncomp.rpca=0, alpha=0.75, robiter=100, crit=0.975, trace=FALSE)
 {
-    call = match.call()
+    call <- match.call()
     center.mode <- match.arg(center.mode)
     scale.mode <- match.arg(scale.mode)
     coda.transform <- match.arg(coda.transform)
@@ -290,7 +290,7 @@ Tucker3 <- function(X, P=2, Q=2, R=2,
     else
     {
         V <- matrix(0, nrow=J+1, ncol=J)
-        for (i in 1:ncol(V))
+        for (i in seq_len(ncol(V)))
         {
             V[1:i, i] <- 1/i
             V[i + 1, i] <- (-1)
@@ -429,7 +429,7 @@ Tucker3 <- function(X, P=2, Q=2, R=2,
 
     ## Back-transformation of loadings to clr
     V <- matrix(0, nrow = J+1, ncol = J)
-    for (i in 1:ncol(V))
+    for (i in seq_len(ncol(V)))
     {
         V[1:i, i] <- 1/i
         V[i + 1, i] <- (-1)

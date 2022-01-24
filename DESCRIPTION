@@ -16,6 +16,8 @@ Imports: rrcov, robustbase, ThreeWay, nnls, pracma
 LazyLoad: no
 LazyData: no
 License: GPL (>= 2)
+URL: https://github.com/valentint/rrcov3way
+Repository: CRAN
 Packaged: 2020-04-09 10:50:08 UTC; Share
 NeedsCompilation: no
 RoxygenNote: 7.1.2

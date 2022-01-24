@@ -9,7 +9,7 @@ xout$vvalue
 
 w <- c(NA, 0, 0.5, 1, 2.5, 3, 3.5, 4, 5, 10, Inf)
 res <- matrix(NA, nrow=length(w), ncol=7)
-for(i in 1:length(w))
+for(i in seq_along(w))
 {
     res[i, 1] <- res[i, 2] <- res[i, 3] <- w[i]
     if(is.na(w[i]))
@@ -22,7 +22,7 @@ for(i in 1:length(w))
     res[i, 4:7] <- round(x$vvalue,3)
 }
 colnames(res) <- c("A", "B", "C", "Core", "A", "B", "C")
-rownames(res) <- 1:nrow(res)
+rownames(res) <- seq_len(nrow(res))
 res
 
 ## Example with the UNIDO Manufacturing value added data

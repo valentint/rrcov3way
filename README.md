@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rrcov3way: Robust Methods for Multiway Data Analysis
+# `rrcov3way`: Robust Methods for Multiway Data Analysis
 
 [![CRAN
 version](https://www.r-pkg.org/badges/version/rrcov3way)](https://cran.r-project.org/package=rrcov3way)

@@ -340,7 +340,7 @@ Parafac <- function(X, ncomp=2,
     else
     {
         V <- matrix(0, nrow = J+1, ncol = J)
-        for(i in 1:ncol(V))
+        for(i in seq_len(ncol(V)))
         {
             V[1:i, i] <- 1/i
             V[i + 1, i] <- (-1)
@@ -469,7 +469,7 @@ Parafac <- function(X, ncomp=2,
 
     ## Back-transformation of loadings to clr
     V <- matrix(0, nrow = J+1, ncol = J)
-    for (i in 1:ncol(V)) {
+    for (i in seq_len(ncol(V))) {
       V[1:i, i] <- 1/i
       V[i + 1, i] <- (-1)
       V[, i] <- V[, i] * sqrt(i/(i + 1))
@@ -501,6 +501,8 @@ Parafac <- function(X, ncomp=2,
 
 ## - dd     = distance-distance plot
 ## - comp   = paired component plot for a single mode
+## - percomp= per component plot
+## - allcomp= all components plot
 ##
 plot.parafac <- function(x, which=c("dd", "comp", "percomp", "allcomp", "all"), ask = (which=="all" && dev.interactive(TRUE)), id.n, ...)
 {
@@ -509,19 +511,19 @@ plot.parafac <- function(x, which=c("dd", "comp", "percomp", "allcomp", "all"), 
     on.exit(par(op))
 
     if((which == "all" || which == "dd")) {
-        ret <- .ddplot(x, id.n=id.n, ...)       # distance-distance plot
+        ret <- .ddplot(x, id.n=id.n, ...)           # distance-distance plot
     }
 
     if((which == "all" || which == "comp")) {
-        ret <- .compplot.parafac(x, ...)        # paired components plot
+        ret <- .compplot.parafac(x, ...)            # paired components plot
     }
 
     if((which == "all" || which == "percomp")) {
-        ret <- .percompplot.parafac(x, ...)       # per-component plot
+        ret <- .percompplot.parafac(x, ...)         # per-component plot
     }
 
     if((which == "all" || which == "allcomp")) {
-        ret <- .allcompplot(x, ...)       # per-component plot
+        ret <- .allcompplot(x, ...)                 # all-component plot
     }
 
     invisible(ret)
