@@ -3,9 +3,13 @@
 
 # `rrcov3way`: Robust Methods for Multiway Data Analysis
 
+<!-- badges: start -->
+
 [![CRAN
 version](https://www.r-pkg.org/badges/version/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
+[![R-CMD-check](https://github.com/valentint/rrcov3way/workflows/R-CMD-check/badge.svg)](https://github.com/valentint/rrcov3way/actions)
 [![downloads](https://cranlogs.r-pkg.org/badges/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
+<!-- badges: end -->
 
 The package provides robust methods for multiway data analysis by means
 of *Parafac* and *Tucker 3* models (Engelen and Hubert (2011)
@@ -51,7 +55,7 @@ proportion for the world as a whole.
 ##  23 countries x 6 industries x 7 years
 library(rrcov3way)
 #> Robust Methods for Multiway Data Analysis, Applicable also for
-#> Compositional Data (version 0.2-0)
+#> Compositional Data (version 0.2-1)
 #> 
 #> Attaching package: 'rrcov3way'
 #> The following object is masked from 'package:stats':
