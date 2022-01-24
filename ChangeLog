@@ -1,13 +1,13 @@
-2020-02-24  Valentin Todorov  <valentin.todorov@chello.at>
+2022-01-24  Valentin Todorov  <valentin.todorov@chello.at>
     *
     * DESCRIPTION (Version): 0.2-0
     *
-    *   
+    *
     *   Added Readme.md and development version published on GitHub
     *
     *   R/Parafac.R, R/Tucker3.R: fixed a bug in the computation of the returned fit and fit percentage values.
     *
-    *   R/Tucker3.R: initialization option implemented 
+    *   R/Tucker3.R: initialization option implemented (start=)
     *
     *   R/Parafac.R, R/Tucker3.R, R/plot-utils.R: added clr transformation - parameter ilr=TRUE/FALSE
     *       in Parafac() and Tucker3() changed to coda.transform=c("none", "ilr", "clr")

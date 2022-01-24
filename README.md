@@ -7,11 +7,11 @@
 version](https://www.r-pkg.org/badges/version/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 [![downloads](https://cranlogs.r-pkg.org/badges/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 
-The package provides methods for multiway data analysis by means of
-*Parafac* and *Tucker 3* models. Robust versions (Engelen and Hubert
-(2011) <doi:10.1016/j.aca.2011.04.043>) and versions for compositional
-data are also provided (Gallo (2015) <doi:10.1080/03610926.2013.798664>,
-Di Palma et al. (2018) <doi:10.1080/02664763.2017.1381669>).
+The package provides robust methods for multiway data analysis by means
+of *Parafac* and *Tucker 3* models (Engelen and Hubert (2011)
+<doi:10.1016/j.aca.2011.04.043>). Robust versions for compositional data
+are also provided (Gallo (2015) <doi:10.1080/03610926.2013.798664>, Di
+Palma et al. (2018) <doi:10.1080/02664763.2017.1381669>).
 
 ## Installation
 
@@ -98,3 +98,24 @@ res
 #> Fit percentage: 57.97 %
 #> 
 ```
+
+## Community guidelines
+
+### Report issues and request features
+
+If you experience any bugs or issues or if you have any suggestions for
+additional features, please submit an issue via the
+[*Issues*](https://github.com/valentint/rrcov3way/issues) tab of this
+repository. Please have a look at existing issues first to see if your
+problem or feature request has already been discussed.
+
+### Contribute to the package
+
+If you want to contribute to the package, you can fork this repository
+and create a pull request after implementing the desired functionality.
+
+### Ask for help
+
+If you need help using the package, or if you are interested in
+collaborations related to this project, please get in touch with the
+package maintainer.

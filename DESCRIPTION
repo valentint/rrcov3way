@@ -1,5 +1,5 @@
 Package: rrcov3way
-Date: 2022-01-07
+Date: 2022-02-24
 Version: 0.2-0
 VersionNote: Released 0.1-18 on 2020-01-17 on CRAN
 Title: Robust Methods for Multiway Data Analysis, Applicable also for
@@ -8,9 +8,7 @@ Authors@R: c(person("Valentin", "Todorov", role = c("aut", "cre"), email = "vale
          , person(" Maria Anna", "Di Palma", role = "aut", email = "madipalma@unior.it")
          , person("Michele", "Gallo", role = "aut")
           )
-Description: Provides methods for multiway data analysis by means of Parafac
-    and Tucker 3 models. Robust versions (Engelen and Hubert (2011) <doi:10.1016/j.aca.2011.04.043>) and versions
-    for compositional data are also provided (Gallo (2015) <doi:10.1080/03610926.2013.798664>, Di Palma et al. (2018) <doi:10.1080/02664763.2017.1381669>).
+Description: The package provides robust methods for multiway data analysis by means of _Parafac_ and _Tucker 3_ models (Engelen and Hubert (2011) <doi:10.1016/j.aca.2011.04.043>). Robust versions for compositional data are also provided (Gallo (2015) <doi:10.1080/03610926.2013.798664>, Di Palma et al. (2018) <doi:10.1080/02664763.2017.1381669>).
 Maintainer: Valentin Todorov <valentin.todorov@chello.at>
 Imports: rrcov, robustbase, ThreeWay, nnls, pracma
 LazyLoad: no
