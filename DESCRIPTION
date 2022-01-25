@@ -24,3 +24,5 @@ RoxygenNote: 7.1.2
 Author: Valentin Todorov [aut, cre] (<https://orcid.org/0000-0003-4215-0245>),
   Maria Anna Di Palma [aut],
   Michele Gallo [aut]
+Suggests: 
+    covr

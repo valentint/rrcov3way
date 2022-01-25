@@ -1,3 +1,4 @@
 .gitignore
 ^README\.rmd$
 ^\.github$
+^codecov\.yml$
