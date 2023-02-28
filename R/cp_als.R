@@ -14,8 +14,7 @@
 ##
 ##  start: svd, random or given matrices A, B and C
 ##
-##  roxygen2::roxygenise("c:/Users/valen/OneDrive/MyRepo/R/rrcov3way",
-##      load_code=roxygen2:::load_installed, clean=TRUE)
+##  roxygen2::roxygenise("c:/Users/valen/OneDrive/MyRepo/R/rrcov3way", load_code=roxygen2:::load_installed, clean=TRUE)
 
 
 #'  Alternating Least Squares (ALS) for Candecomp/Parafac (CP)

@@ -11,6 +11,7 @@ version](https://www.r-pkg.org/badges/version/rrcov3way)](https://cran.r-project
 [![Codecov test
 coverage](https://codecov.io/gh/valentint/rrcov3way/branch/master/graph/badge.svg)](https://app.codecov.io/gh/valentint/rrcov3way?branch=master)
 [![downloads](https://cranlogs.r-pkg.org/badges/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 <!-- badges: end -->
 
@@ -58,7 +59,7 @@ proportion for the world as a whole.
 ##  23 countries x 6 industries x 7 years
 library(rrcov3way)
 #> Robust Methods for Multiway Data Analysis, Applicable also for
-#> Compositional Data (version 0.2-1)
+#> Compositional Data (version 0.2-5)
 #> 
 #> Attaching package: 'rrcov3way'
 #> The following object is masked from 'package:stats':
