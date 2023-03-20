@@ -153,3 +153,13 @@ congruence <- function(x, y = NULL)
     rownames(ret) <- colnames(x)
     ret
 }
+
+##  Find the general inverse of a (rectangular) matrix a, i.e. find
+##  a matrix G such that AGA == A.
+##  First try to find   t(A %*% solve(crossprod(A))) and if it does not work,
+##  calculate the general inverse using the function pinv() from package pracma.
+##
+do_inv <- function(a, tolerance=1e-12) {
+    tryCatch(expr={t(a %*% solve(crossprod(a)))},
+             error=function(msg) pracma::pinv(a, tol=tolerance))
+}

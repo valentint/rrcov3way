@@ -22,6 +22,9 @@ Robust versions for compositional data are also provided (Gallo (2015)
 [doi:10.1080/03610926.2013.798664](https://doi.org/10.1080/03610926.2013.798664),
 Di Palma et al. (2018)
 [doi:10.1080/02664763.2017.1381669](https://doi.org/10.1080/02664763.2017.1381669)).
+Several optimization methods alternative to ALS are available (Simonacci
+and Gallo (2019) <doi:10.1016/j.chemolab.2019.103822>, Simonacci and
+Gallo (2020) <doi:10.1007/s00500-019-04320-9>).
 
 ## Installation
 
@@ -59,7 +62,7 @@ proportion for the world as a whole.
 ##  23 countries x 6 industries x 7 years
 library(rrcov3way)
 #> Robust Methods for Multiway Data Analysis, Applicable also for
-#> Compositional Data (version 0.2-5)
+#> Compositional Data (version 0.3-0)
 #> 
 #> Attaching package: 'rrcov3way'
 #> The following object is masked from 'package:stats':

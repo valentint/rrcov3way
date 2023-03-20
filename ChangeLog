@@ -1,9 +1,13 @@
-2023-03-01  Valentin Todorov  <valentin.todorov@chello.at>
+2023-03-16  Valentin Todorov  <valentin.todorov@chello.at>
     *
     * DESCRIPTION (Version): 0.3-0
     *
-    *   Added data set dorrit
-    *
+    *   data/dorrit. rd: Added data set dorrit
+    *   R/cp_atld.R, cp_int2.R: added functions for CP with alternative 
+    *       optimization techniques 
+    *   R/Parafac.R: added option 'optim=c("als", "atld", "int2")' for using
+    *       alternative optimization techniques
+    * 
 
 2022-10-15  Valentin Todorov  <valentin.todorov@chello.at>
     *
