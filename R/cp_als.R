@@ -116,8 +116,6 @@ cp_als <- function (X, n, m, p, ncomp, const="none", start="random",
         stop("Number of factors to extract 'ncomp' must be provided!")
     r <- ncomp
 
-cputime <- system.time({
-
     if(length(dim(X)) == 3)
     {
         Xa <- unfold(X)
@@ -192,7 +190,7 @@ cputime <- system.time({
 
         f <- sum((Xa - tcrossprod(A, krp(C, B)))^2)
         if(trace)
-            cat(paste("Candecomp/Parafac function value at Start is ", f, sep = " "), fill = TRUE)
+            cat(paste("\nCandecomp/Parafac function value at Start is ", f, sep = " "), fill = TRUE)
 
         fold <- f + 2 * conv * f
         iter <- 0
@@ -309,7 +307,6 @@ cputime <- system.time({
                     sep = " "), fill = TRUE)
             }
         }
-    })
 
     ftiter <- ftiter[1:(iter/10), ]           # take only the first iter/10 rows
     Rsq <- 1 - f/ssx
@@ -327,7 +324,7 @@ cputime <- system.time({
         cat(paste("Fit percentage is", round(fp, 2), "%", sep = " "), fill = TRUE)
     }
 
-    out <- list(fit=f, fp=fp, ss=ssx, A=A, B=B, C=C, iter=iter, cputime=cputime[1],
+    out <- list(fit=f, fp=fp, ss=ssx, A=A, B=B, C=C, iter=iter, 
             tripcos=tripcos, mintripcos=mintripcos, ftiter=ftiter, const=const)
     out
 }

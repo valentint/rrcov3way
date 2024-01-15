@@ -73,8 +73,6 @@ cp_atld <- function(X, n, m, p, ncomp, conv=1e-06, start="random", maxit=5000, t
         stop("Number of factors to extract 'ncomp' must be provided!")
     r <- ncomp
 
-cputime <- system.time({
-
     if(length(dim(X)) == 3)
     {
         dn <- dimnames(X)
@@ -142,7 +140,7 @@ cputime <- system.time({
 
         f <- sum((Xa - A %*% t(rrcov3way::krp(C,B)))^2)
         if(trace)
-            cat(paste("Candecomp/Parafac function value at Start is ", f, sep = " "), fill = TRUE)
+            cat(paste("\nCandecomp/Parafac function value at Start is ", f, sep = " "), fill = TRUE)
 
         fold <- f + 2 * conv * f
         iter <- 0
@@ -170,7 +168,6 @@ cputime <- system.time({
             ## Record Relative Fit
             single_iter[iter] <- abs((f - fold)/f)
         }
-    })
 
     Rsq <- 1 - f/ssx
     fp <- 100 * Rsq
@@ -188,7 +185,7 @@ cputime <- system.time({
         cat(paste("Fit percentage is", round(fp, 2), "%", sep = " "), fill = TRUE)
     }
 
-    out <- list(fit=f, fp=fp, ss=ssx, A=A, B=B, C=C, iter=iter, cputime=cputime[1],
+    out <- list(fit=f, fp=fp, ss=ssx, A=A, B=B, C=C, iter=iter, 
         tripcos=tripcos, mintripcos=mintripcos, single_iter=single_iter[1:iter])
     out
 }

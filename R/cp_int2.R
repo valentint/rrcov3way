@@ -61,9 +61,9 @@
 #' Simonacci, V. and Gallo, M. (2020). An ATLD--ALS method for the trilinear decomposition
 #'  of large third-order tensors, \emph{Soft Computing} 24 13535--13546.
 #'
-#' Todorov, V. and Simonacci, V. and Gallo, M. and Trendafilov, N. (2023). A novel
-#'  estimation procedure for robust CANDECOMP/PARAFAC model fitting,
-#'  submitted for publication.
+#' Todorov, V. and Simonacci, V. and Gallo, M. and Trendafilov, N. (2023). A novel 
+#'  estimation procedure for robust CANDECOMP/PARAFAC model fitting. 
+#'  \emph{Econometrics and Statistics}. In press.
 #'
 #' @note The argument \code{const} should be a three element character vector.
 #'  Set \code{const[j]="none"} for unconstrained update in j-th mode weight
@@ -101,8 +101,6 @@ cp_int2 <- function (X, n, m, p, ncomp, initconv=1e-02, conv=1e-06,
     if(missing(ncomp))
         stop("Number of factors to extract 'ncomp' must be provided!")
     r <- ncomp
-
-cputime <- system.time({
 
     if(length(dim(X)) == 3)
     {
@@ -305,7 +303,6 @@ cputime <- system.time({
             if(trace && iter %% 50 == 0)
                 cat(paste("f=", f, "after", iter, "iters; diff.=", fold - f, sep = " "), fill = TRUE)
         }
-    })
 
     ftiter <- ftiter[1:(iter/10), , drop=FALSE]           # take only the first iter/10 rows
 
@@ -320,7 +317,7 @@ cputime <- system.time({
         mintripcos = tripcos
 
     out <- list(fit=f, fp = fp, ss=ssx, A = A, B = B, C = C, iter = iter,
-        iter_opt=iter_opt, cputime=cputime[1], tripcos=tripcos, mintripcos=mintripcos, ftiter=ftiter,
+        iter_opt=iter_opt, tripcos=tripcos, mintripcos=mintripcos, ftiter=ftiter,
         single_iter=single_iter[1:iter])
 
     out
