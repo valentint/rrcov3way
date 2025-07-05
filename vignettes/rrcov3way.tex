@@ -1,5 +1,9 @@
 \documentclass[article,shortnames, nojss]{jss}
 
+%\VignetteIndexEntry{Robust Tools for Three-way Component Analysis of Compositional Data: The R package rrcov3way}
+%\VignetteKeywords{robustness, multi-way analysis, PARAFAC, TUCKER3}
+%\VignettePackage{rrcov3way}
+
 \usepackage[ansinew]{inputenc}
 \usepackage{multirow}
 \usepackage{color}
@@ -85,21 +89,21 @@ A brief overview of multilinear tools, robustification procedures and compositio
 
     Violetta Simonacci\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    L'Orientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{vsimonacci@unior.it}\\
 
     Maria Anna Di Palma\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    LOrientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{madipalma@unior.it}\\
 
     Michele Gallo\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    L'Orientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{mgallo@unior.it}\\
@@ -586,7 +590,7 @@ Parafac(X = elind, ncomp = 3, robust = TRUE)
 PARAFAC analysis with  3  components.
 Fit value: 1.373117 
 Fit percentage: 77.11 %
-Robust 
+Robust
 \end{Soutput}
 \end{Schunk}
 \begin{figure}[H]
@@ -824,7 +828,7 @@ Parafac(X = elind, robust = TRUE, ncomp.rpca = 11)
 PARAFAC analysis with  2  components.
 Fit value: 243.5351 
 Fit percentage: 85.12 %
-Robust 
+Robust
 \end{Soutput}
 \begin{Sinput}
 R> rrcov::screeplot(o$pcaobj, main = "Screeplot: elind data")
@@ -1078,8 +1082,8 @@ both the core array and the component matrices can be obtained. The following
 Table~\ref{tab:varimax} shows the varimax values for the core array and
 the component matrices for different joint varimax rotations (given by different
 relative weights) to the Tucker3 solution with 3x2x2 components of the OECD data.
-% latex table generated in R 4.3.0 by xtable 1.8-4 package
-% Wed Oct 12 19:33:55 2022
+% latex table generated in R 4.5.0 by xtable 1.8-4 package
+% Sat Jul  5 14:53:47 2025
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrrrrr}
@@ -1109,8 +1113,8 @@ the best compromise between simplicity of core array and component matrices.
 The next four tables show the unrotated and rotated with relative weights
 (3, 3, 3) solutions and allow to observe to what extent the
 interpretability of the model was improved.
-% latex table generated in R 4.3.0 by xtable 1.8-4 package
-% Wed Oct 12 19:33:55 2022
+% latex table generated in R 4.5.0 by xtable 1.8-4 package
+% Sat Jul  5 14:53:47 2025
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrrrr}
@@ -1146,8 +1150,8 @@ CA & -0.16 & -0.05 & 0.06 & 0.17 & -0.02 & 0.02 \\
     rotated solution with relative weights (3, 3, 3)} 
 \label{tab:varimax-A}
 \end{table}
-% latex table generated in R 4.3.0 by xtable 1.8-4 package
-% Wed Oct 12 19:33:55 2022
+% latex table generated in R 4.5.0 by xtable 1.8-4 package
+% Sat Jul  5 14:53:47 2025
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -1166,8 +1170,8 @@ INFO & -0.26 & 0.09 & 0.02 & 0.28 \\
     rotated solution with relative weights (3, 3, 3)} 
 \label{tab:varimax-B}
 \end{table}
-% latex table generated in R 4.3.0 by xtable 1.8-4 package
-% Wed Oct 12 19:33:55 2022
+% latex table generated in R 4.5.0 by xtable 1.8-4 package
+% Sat Jul  5 14:53:47 2025
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -1187,8 +1191,8 @@ INFO & -0.26 & 0.09 & 0.02 & 0.28 \\
     rotated solution with relative weights (3, 3, 3)} 
 \label{tab:varimax-C}
 \end{table}
-% latex table generated in R 4.3.0 by xtable 1.8-4 package
-% Wed Oct 12 19:33:55 2022
+% latex table generated in R 4.5.0 by xtable 1.8-4 package
+% Sat Jul  5 14:53:47 2025
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -1468,7 +1472,7 @@ Parafac(X = X, ncomp = 3, robust = TRUE, ncomp.rpca = 3)
 PARAFAC analysis with  3  components.
 Fit value: 1.377797 
 Fit percentage: 82.78 %
-Robust 
+Robust
 \end{Soutput}
 \end{Schunk}
 \paragraph{Distance-Distance plot.} In the context of PCA \cite{hubert-ROBPCA:2005}

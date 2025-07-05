@@ -9,7 +9,7 @@ A three-way array with dimension \code{10 x 18 x 6}.
  The first dimension refers to the 10 faculties. The second dimension
  refers to 18 standardized questions rated on a ten-point Likert scale 
  (1 = "Strongly Disagree" to 10 = "Strongly Agree").
- The third dimension refers to six consequtive academic years (2012–2017).
+ The third dimension refers to six consequtive academic years (2012--2017).
 }
 \source{
 Italian universities are mandated by Law No. 370/99 to evaluate
@@ -52,9 +52,9 @@ The primary assessment tool for analyzing student satisfaction is an
 }
 \references{
 Gallo M, Simonacci V, Todorov V (2021) A compositional three-way approach
- for student satisfaction analysis. In: Filzmoser P, Hron K, Mart´ın-Fern´andez
+ for student satisfaction analysis. In: Filzmoser P, Hron K, Martin--Fernandez
  JA, Palarea-Albaladejo J (eds) Advances in Compositional Data Analysis,
- Springer, Cham, pp 143–162
+ Springer, Cham, pp 143--162
 
 Todorov, V., Simonacci, V., Gallo, M., and Di Palma, M. (2025). Robust tools
  for three-way component analysis of compositional data: The R package

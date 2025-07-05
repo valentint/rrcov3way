@@ -141,7 +141,7 @@ NULL
 #'  model: A set of six persons with scores on five response variables for four 
 #'  different situations. The response variables indicate to what extent each 
 #'  individual displays an emotional, sensitive, caring, thorough, or accurate 
-#'  behavior. The data set is represented as a 6 × 5 × 4 array. The data are 
+#'  behavior. The data set is represented as a 6 x 5 x 4 array. The data are 
 #'  chosen such that they correspond to a Tucker3 model with \code{P=2, Q=2, R=2}.
 #'
 #' @name Kiers2001
@@ -153,7 +153,7 @@ NULL
 #'  The third dimension refers to four different situations.
 #' @source
 #' Kiers HAL, Mechelen IV (2001) Three-way component analysis: Principles and
-#' illustrative application. Psychological Methods 6(1):84–110 
+#' illustrative application. Psychological Methods 6(1):84--110 
 #' @references
 #' Todorov, V., Simonacci, V., Gallo, M., and Di Palma, M. (2025). Robust tools
 #'  for three-way component analysis of compositional data: The R package
@@ -191,7 +191,7 @@ NULL
 #'  The first dimension refers to the 10 faculties. The second dimension
 #'  refers to 18 standardized questions rated on a ten-point Likert scale 
 #'  (1 = "Strongly Disagree" to 10 = "Strongly Agree").
-#'  The third dimension refers to six consequtive academic years (2012–2017).
+#'  The third dimension refers to six consequtive academic years (2012--2017).
 #' @source
 #'  Italian universities are mandated by Law No. 370/99 to evaluate
 #'  teaching quality through student opinion surveys. The National Agency for
@@ -206,9 +206,9 @@ NULL
 #'  educational quality. Quality & Quantity 51(2):565--579 
 #' @references
 #'  Gallo M, Simonacci V, Todorov V (2021) A compositional three-way approach
-#'  for student satisfaction analysis. In: Filzmoser P, Hron K, Mart´ın-Fern´andez
+#'  for student satisfaction analysis. In: Filzmoser P, Hron K, Martin--Fernandez
 #'  JA, Palarea-Albaladejo J (eds) Advances in Compositional Data Analysis,
-#'  Springer, Cham, pp 143–162
+#'  Springer, Cham, pp 143--162
 #'
 #' Todorov, V., Simonacci, V., Gallo, M., and Di Palma, M. (2025). Robust tools
 #'  for three-way component analysis of compositional data: The R package

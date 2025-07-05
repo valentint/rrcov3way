@@ -89,21 +89,21 @@ A brief overview of multilinear tools, robustification procedures and compositio
 
     Violetta Simonacci\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    L'Orientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{vsimonacci@unior.it}\\
 
     Maria Anna Di Palma\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    LOrientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{madipalma@unior.it}\\
 
     Michele Gallo\\
     Department of Human and Social Sciences\\
-    L’Orientale--University of Naples\\
+    L'Orientale--University of Naples\\
     P.zza S.Giovanni Maggiore, 30\\
     Naples, 80134, Italy\\
     E-mail:  \email{mgallo@unior.it}\\
