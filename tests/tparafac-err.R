@@ -17,6 +17,49 @@ res <- Parafac(va3way, trace=TRUE)              # tracing
 ## Using robustness with clr transformation
 try(res <- Parafac(va3way, robust=TRUE, coda.transform="clr"))
 
+## Using robustness with optim="atld"
+try(res <- Parafac(va3way, robust=TRUE, optim="atld"))
+
+##   Needs number of components to be extarcted
+try(res <- cp_int2(va3way))
+
+##   X must be a three-dimensional array or a matrix
+try(res <- cp_int2(va3way[,1,1], ncomp=2))
+
+##  cp_int2() with start as a list
+di <- dim(va3way)
+n <- di[1]
+m <- di[2]
+p <- di[3]
+r <- 2
+A <- pracma::orth(matrix(rnorm(max(n,r) * r), max(n,r)))[1:n, , drop=FALSE]
+B <- pracma::orth(matrix(rnorm(max(m,r) * r), max(m,r)))[1:m, , drop=FALSE]
+C <- pracma::orth(matrix(rnorm(max(p,r) * r), max(p,r)))[1:p, , drop=FALSE]
+res <- cp_int2(va3way, ncomp=r, start=list(A=A, B=B, C=C))
+
+##   Wrong constraints
+try(res <- Parafac(va3way, const="ox", optim="int2"))
+try(res <- Parafac(va3way, const=c("orth", "orth"), optim="int2"))
+
+##   Wrong initial values
+try(res <- Parafac(va3way, start=c("random", "svd"), optim="int2"))
+try(res <- Parafac(va3way, start=c("randomx"), optim="int2"))
+
+##  Needs dimensions of the unfolded array
+try(res <- cp_int2(unfold(va3way), ncomp=2))
+try(res <- cp_int2(unfold(va3way), n=50, m=5, p=14, ncomp=2))   # wrong n
+try(res <- cp_int2(unfold(va3way), n=49, m=6, p=14, ncomp=2))   # wrong m
+try(res <- cp_int2(unfold(va3way), n=49, m=5, p=15, ncomp=2))   # wrong p
+try(res <- cp_int2(unfold(va3way), n=49, m=5, p=14, ncomp=2))   # OK
+
+##  With trace
+try(res <- cp_int2(va3way, ncomp=2, trace=TRUE))
+
+##  With constraints
+try(res <- cp_int2(va3way, ncomp=2, const="orth"))
+try(res <- cp_int2(va3way, ncomp=2, const=c("orth", "orth")))
+try(res <- cp_int2(va3way, ncomp=2, const="zerocor"))
+
 ## Rejected values of parameter 'crit'
 try(res <- Parafac(va3way, crit=c(1:10)))       # length different than 1
 try(res <- Parafac(va3way, crit=-1))            # crit non-positive

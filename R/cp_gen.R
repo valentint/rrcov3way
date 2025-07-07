@@ -106,15 +106,14 @@ cp_gen <- function(I=20, J=20, K=20, nsim=200, nf=3,
     if(eps != 0 && type == "none")
         stop("Type of outliers not specified for eps>0. Must be one of 'bl', 'gl' or 'og'!")
         
-    if(missing(c1) | missing(c2)) {
+    if(eps > 0 && (missing(c1) || missing(c2))) {
         if(type == "bl") {
             c1 <- 10; c2 <- 0.1
         } else if(type == "gl") {
             c1 <- 10; c2 <- 0.0
         } else if(type == "og") {
             c1 <- 1; c2 <- 0.1
-        } else
-            stop("Undefined outlier type")
+        }
     }
 
     param <- list(I=I, J=J, K=K, nsim=nsim, nf=nf, noise=noise, noise1=noise1,

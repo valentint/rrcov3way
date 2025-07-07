@@ -152,3 +152,22 @@ X <- getLoadings(PcaClassic(delivery))
 Y <- getLoadings(PcaHubert(delivery, k=3))
 round(congruence(X,Y),3)
 try(congruence(X,Y[1:2,]))
+
+## do_inv() ======================================================
+##  a) using solve()
+hilbert <- function(n) { i <- 1:n; 1 / outer(i - 1, i, `+`) }
+h8 <- hilbert(8)
+sh8 <- rrcov3way:::do_inv(h8)
+round(sh8 %*% h8, 3)
+all.equal(round(sh8 %*% h8, 3), diag(8))
+
+##  b) using pracma::pinv()
+A <- pracma::magic(8)
+A <- A[,1:6]
+rrcov3way:::do_inv(A)
+
+## unimcd() =====================================================
+set.seed(1)
+y <- rnorm(20)
+mcd1 <- rrcov3way:::unimcd(y, quan=11)
+mcd2 <- rrcov3way:::unimcd(y, quan=20)

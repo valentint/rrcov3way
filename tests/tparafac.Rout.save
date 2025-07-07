@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2023-06-12 r84534 ucrt) -- "Unsuffered Consequences"
-Copyright (C) 2023 The R Foundation for Statistical Computing
+R Under development (unstable) (2024-10-01 r87205 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -43,6 +43,15 @@ Fit percentage: 94.18 %
 > print(res$fit)
 [1] 1.975174e+23
 > ## IGNORE_RDIFF_BEGIN
+> print(res)
+Call:
+Parafac(X = va3way)
+
+
+PARAFAC analysis with  2  components.
+Fit value: 1.975174e+23 
+Fit percentage: 94.18 %
+ 
 > print(res$A)
                F1            F2
 ALB    -902018571    -482040759
@@ -181,6 +190,7 @@ Eigenvalues of X2:
 [1] 46.691223  1.584786
 
 Candecomp/Parafac function value at Start is  6393.62804653566
+Minimal Triple cosine = -0.119355455299577
 f= 235.163056855737 after 50 iters; diff.= 0.00250072376849175
 
 Candecomp/Parafac function value is 235.127228132407 after 90 iterations
@@ -562,6 +572,30 @@ FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE
 FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE 
   SEN   SGP   SVK   SVN   ESP   SWE   CHE   TUR   GBR   YEM 
  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE 
+> 
+> set.seed(1)
+> (res.int2 <- Parafac(va3way, center=TRUE, scale=TRUE, optim="int2"))
+Call:
+Parafac(X = va3way, center = TRUE, scale = TRUE, optim = "int2")
+
+
+PARAFAC analysis with  2  components.
+Fit value: 0.5949821 
+Fit percentage: 88.1 %
+Optimized with INT2.
+ 
+> 
+> set.seed(1)
+> (res.atld <- Parafac(va3way, center=TRUE, scale=TRUE, optim="atld"))
+Call:
+Parafac(X = va3way, center = TRUE, scale = TRUE, optim = "atld")
+
+
+PARAFAC analysis with  2  components.
+Fit value: 1.698857 
+Fit percentage: 66.02 %
+Optimized with ATLD.
+ 
 > 
 > ##================================================================
 > ##
@@ -1010,4 +1044,4 @@ Serv  0.1371751 -0.7890863
 > 
 > proc.time()
    user  system elapsed 
-   2.18    0.23    6.23 
+   2.48    0.09    2.62 

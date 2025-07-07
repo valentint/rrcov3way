@@ -16,6 +16,7 @@ va3way[va3way==0] <- 0.001
 (res <- Parafac(va3way))
 print(res$fit)
 ## IGNORE_RDIFF_BEGIN
+print(res)
 print(res$A)
 print(res$B)
 print(res$C)
@@ -62,6 +63,12 @@ print(res.rc$rd)
 print(res$cutoff.rd)
 print(res.rc$Hset)
 print(res.rc$flag)
+
+set.seed(1)
+(res.int2 <- Parafac(va3way, center=TRUE, scale=TRUE, optim="int2"))
+
+set.seed(1)
+(res.atld <- Parafac(va3way, center=TRUE, scale=TRUE, optim="atld"))
 
 ##================================================================
 ##

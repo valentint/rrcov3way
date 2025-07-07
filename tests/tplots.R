@@ -17,11 +17,14 @@ va3way[va3way==0] <- 0.001
 
 ## IGNORE_RDIFF_BEGIN
 (res <- Tucker3(va3way))
+(res_clr <- Tucker3(va3way, coda.transform="clr"))
 print(res$fit)
 print(res$A)
 
 res1 <- reflect(res, mode="C", rsign=-1)
 print(res1$C)
+
+res2 <- reflect(res_clr, mode="B", rsign=-1)
 ## IGNORE_RDIFF_END
 
 ## Distance-distance plot
@@ -50,10 +53,19 @@ plot(res, which="allcomp", mode="B", main="All component plot, mode B")
 
 ## Joint biplot
 plot(res, which="jbplot", main="Joint biplot")
+A.x.off <- A.y.off <- rep(0, nrow(res$A))
+B.x.off <- B.y.off <- rep(0, nrow(res$B))
+A.x.off[1] <- 0.01
+A.y.off[1] <- 0.01
+B.x.off[1] <- 0.01
+B.y.off[1] <- 0.01
+plot(res, which="jbplot", main="Joint biplot", A.x.off=A.x.off, A.y.off=A.y.off,
+    B.x.off=B.x.off, B.y.off=B.y.off)
 plot(res1, which="jbplot", main="Joint biplot")             # reflected C
 
 ## Trajectory
 plot(res, which="tjplot", main="Trajectory biplot")
+plot(res, which="tjplot", main="Trajectory biplot", longnames=FALSE)
 plot(res, which="tjplot", choices=c(1:4), arrows=FALSE, main="Trajectory biplot")
 plot(res1, which="tjplot", main="Trajectory biplot")        # reflected C
 

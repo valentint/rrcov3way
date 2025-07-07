@@ -296,7 +296,7 @@ cp_als <- function (X, n, m, p, ncomp, const="none", start="random",
                     mintripcos <- tripcos
                 if (tripcos < mintripcos)
                     mintripcos <-  tripcos
-                if ((iter %% 1000) == 0 & trace)
+                if ((iter %% 50) == 0 & trace)
                     cat(paste("Minimal Triple cosine =", tripcos), fill = TRUE)
 
                 ftiter[iter/10, ] <- c(f, tripcos)

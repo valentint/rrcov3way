@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2021-10-11 r81035) -- "Unsuffered Consequences"
-Copyright (C) 2021 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R Under development (unstable) (2024-10-01 r87205 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -853,7 +853,7 @@ Error in krp(a, c) : A and B must have same number of columns.
 > require(rrcov)
 Loading required package: rrcov
 Loading required package: robustbase
-Scalable Robust Estimators with High Breakdown Point (version 1.6-2)
+Scalable Robust Estimators with High Breakdown Point (version 1.7-8)
 
 > ## IGNORE_RDIFF_END
 > 
@@ -869,6 +869,49 @@ PC3 -0.001 -0.047  0.999
 Error in congruence(X, Y[1:2, ]) : 
   Both 'x' and 'y' must have the same length (number of rows)
 > 
+> ## do_inv() ======================================================
+> ##  a) using solve()
+> hilbert <- function(n) { i <- 1:n; 1 / outer(i - 1, i, `+`) }
+> h8 <- hilbert(8)
+> sh8 <- rrcov3way:::do_inv(h8)
+> round(sh8 %*% h8, 3)
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+[1,]    1    0    0    0    0    0    0    0
+[2,]    0    1    0    0    0    0    0    0
+[3,]    0    0    1    0    0    0    0    0
+[4,]    0    0    0    1    0    0    0    0
+[5,]    0    0    0    0    1    0    0    0
+[6,]    0    0    0    0    0    1    0    0
+[7,]    0    0    0    0    0    0    1    0
+[8,]    0    0    0    0    0    0    0    1
+> all.equal(round(sh8 %*% h8, 3), diag(8))
+[1] TRUE
+> 
+> ##  b) using pracma::pinv()
+> A <- pracma::magic(8)
+> A <- A[,1:6]
+> rrcov3way:::do_inv(A)
+             [,1]         [,2]         [,3]         [,4]         [,5]
+[1,]  0.017715524 -0.016510666 -0.016415275  0.017429352  0.017333961
+[2,] -0.012051077  0.013246542  0.013036683 -0.011421498 -0.011211638
+[3,] -0.005477482  0.006427280  0.006045717 -0.004332793 -0.003951230
+[4,] -0.002005260  0.003947121  0.004557622 -0.003836762 -0.004447262
+[5,] -0.008578854  0.010766384  0.011548588 -0.010925466 -0.011707670
+[6,]  0.014243302 -0.014030507 -0.014927180  0.016933320  0.017829993
+             [,6]         [,7]         [,8]
+[1,] -0.016129103 -0.016033713  0.017047789
+[2,]  0.012407104  0.012197245 -0.010582060
+[3,]  0.004901028  0.004519466 -0.002806542
+[4,]  0.006389124  0.006999624 -0.006278764
+[5,]  0.013895199  0.014677403 -0.014054282
+[6,] -0.017617199 -0.018513871  0.020520012
+> 
+> ## unimcd() =====================================================
+> set.seed(1)
+> y <- rnorm(20)
+> mcd1 <- rrcov3way:::unimcd(y, quan=11)
+> mcd2 <- rrcov3way:::unimcd(y, quan=20)
+> 
 > proc.time()
    user  system elapsed 
-   1.96    0.29    2.29 
+   0.67    0.15    0.79 

@@ -295,7 +295,7 @@ cp_int2 <- function (X, n, m, p, ncomp, initconv=1e-02, conv=1e-06,
                     mintripcos = tripcos
                 if (tripcos < mintripcos)
                     mintripcos = tripcos
-                if (trace && iter %% 1000 == 0)
+                if (trace && iter %% 100 == 0)
                     cat(paste("Minimal Triple cosine =", tripcos, sep = " "), fill = TRUE)
 
                 ftiter[iter/10, ] = c(f, tripcos)

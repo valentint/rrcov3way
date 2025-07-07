@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2022-07-22 r82614 ucrt) -- "Unsuffered Consequences"
-Copyright (C) 2022 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R Under development (unstable) (2024-10-01 r87205 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -30,13 +30,21 @@ Type 'q()' to quit R.
 > 
 > ## IGNORE_RDIFF_BEGIN
 > res <- Parafac(va3way, trace=TRUE)              # tracing
+
 Candecomp/Parafac function value at Start is  3.39457362294427e+24
+Minimal Triple cosine = -0.423616694752834
 f= 1.97957920221784e+23 after 50 iters; diff.= 8945743210706108416
+Minimal Triple cosine = -0.53812847874403
 f= 1.97722009973095e+23 after 100 iters; diff.= 2576101314060615680
+Minimal Triple cosine = -0.603368094236783
 f= 1.97634185241095e+23 after 150 iters; diff.= 1216969433998688256
+Minimal Triple cosine = -0.646351329629483
 f= 1.97588048976323e+23 after 200 iters; diff.= 707595978248552448
+Minimal Triple cosine = -0.677408328882682
 f= 1.97559562967186e+23 after 250 iters; diff.= 4.6278293851e+17
+Minimal Triple cosine = -0.70125129976467
 f= 1.9754019735921e+23 after 300 iters; diff.= 326500214426828800
+Minimal Triple cosine = -0.720335742825421
 f= 1.97526160802808e+23 after 350 iters; diff.= 242856346825785344
 
 Candecomp/Parafac function value is 1.97517430216866e+23 after 390 iterations
@@ -47,6 +55,125 @@ Fit percentage is 94.18 %
 > try(res <- Parafac(va3way, robust=TRUE, coda.transform="clr"))
 Error in Parafac(va3way, robust = TRUE, coda.transform = "clr") : 
   The robust option is not possible with 'clr' transform compositional data. Please use 'ilr'.
+> 
+> ## Using robustness with optim="atld"
+> try(res <- Parafac(va3way, robust=TRUE, optim="atld"))
+Error in Parafac(va3way, robust = TRUE, optim = "atld") : 
+  The robust option is not possible with 'atld' optimization. Please use 'als' or 'int2'.
+> 
+> ##   Needs number of components to be extarcted
+> try(res <- cp_int2(va3way))
+Error in cp_int2(va3way) : 
+  Number of factors to extract 'ncomp' must be provided!
+> 
+> ##   X must be a three-dimensional array or a matrix
+> try(res <- cp_int2(va3way[,1,1], ncomp=2))
+Error in cp_int2(va3way[, 1, 1], ncomp = 2) : 
+  'X' must be three dimensional array or a matrix!
+> 
+> ##  cp_int2() with start as a list
+> di <- dim(va3way)
+> n <- di[1]
+> m <- di[2]
+> p <- di[3]
+> r <- 2
+> A <- pracma::orth(matrix(rnorm(max(n,r) * r), max(n,r)))[1:n, , drop=FALSE]
+> B <- pracma::orth(matrix(rnorm(max(m,r) * r), max(m,r)))[1:m, , drop=FALSE]
+> C <- pracma::orth(matrix(rnorm(max(p,r) * r), max(p,r)))[1:p, , drop=FALSE]
+> res <- cp_int2(va3way, ncomp=r, start=list(A=A, B=B, C=C))
+> 
+> ##   Wrong constraints
+> try(res <- Parafac(va3way, const="ox", optim="int2"))
+Error in cp_int2(X, ncomp = ncomp, const = const, conv = conv, start = start,  : 
+  All elements of 'const' must be one of 'none', 'orth' or 'zerocor'
+> try(res <- Parafac(va3way, const=c("orth", "orth"), optim="int2"))
+> 
+> ##   Wrong initial values
+> try(res <- Parafac(va3way, start=c("random", "svd"), optim="int2"))
+Error in cp_int2(X, ncomp = ncomp, const = const, conv = conv, start = start,  : 
+  'start' must be either a list with elements A, B and C or a single character - one of 'random' or 'svd'!
+> try(res <- Parafac(va3way, start=c("randomx"), optim="int2"))
+Error in cp_int2(X, ncomp = ncomp, const = const, conv = conv, start = start,  : 
+  'start' must be either a list with elements A, B and C or one of 'random' or 'svd'!
+> 
+> ##  Needs dimensions of the unfolded array
+> try(res <- cp_int2(unfold(va3way), ncomp=2))
+Error in cp_int2(unfold(va3way), ncomp = 2) : 
+  The three dimensions of the matricisized array must be provided!
+> try(res <- cp_int2(unfold(va3way), n=50, m=5, p=14, ncomp=2))   # wrong n
+Error in cp_int2(unfold(va3way), n = 50, m = 5, p = 14, ncomp = 2) : 
+  'n' must be equal to the first dimension of the matrix 'X'!
+> try(res <- cp_int2(unfold(va3way), n=49, m=6, p=14, ncomp=2))   # wrong m
+Error in cp_int2(unfold(va3way), n = 49, m = 6, p = 14, ncomp = 2) : 
+  'm*p' must be equal to the second dimension of the matrix 'X'!
+> try(res <- cp_int2(unfold(va3way), n=49, m=5, p=15, ncomp=2))   # wrong p
+Error in cp_int2(unfold(va3way), n = 49, m = 5, p = 15, ncomp = 2) : 
+  'm*p' must be equal to the second dimension of the matrix 'X'!
+> try(res <- cp_int2(unfold(va3way), n=49, m=5, p=14, ncomp=2))   # OK
+> 
+> ##  With trace
+> try(res <- cp_int2(va3way, ncomp=2, trace=TRUE))
+
+ Initialization of ATLD starting ...
+
+ Initialization of ATLD ready. Starting ATLD iteration ...
+
+ iter= 1 estimating A...
+
+ iter= 1 estimating B...
+
+ iter= 1 estimating C...
+
+ iter= 1 f= 1.335947e+24 1.540949 
+
+ iter= 2 estimating A...
+
+ iter= 2 estimating B...
+
+ iter= 2 estimating C...
+
+ iter= 2 f= 1.382318e+24 0.03354572 
+
+ iter= 3 estimating A...
+
+ iter= 3 estimating B...
+
+ iter= 3 estimating C...
+
+ iter= 3 f= 7.250262e+23 0.906577 
+
+ iter= 4 estimating A...
+
+ iter= 4 estimating B...
+
+ iter= 4 estimating C...
+
+ iter= 4 f= 7.147984e+23 0.0143086 
+
+ iter= 5 estimating A...
+
+ iter= 5 estimating B...
+
+ iter= 5 estimating C...
+
+ iter= 5 f= 7.089064e+23 0.008311448 
+f= 1.98073616059552e+23 after 50 iters; diff.= 13161417902986887168
+Minimal Triple cosine = -0.516852335265335
+f= 1.97753761022309e+23 after 100 iters; diff.= 3197088235759075328
+f= 1.97648663655588e+23 after 150 iters; diff.= 1406231063969136640
+Minimal Triple cosine = -0.638036870544151
+f= 1.97596326000848e+23 after 200 iters; diff.= 788717783205543936
+f= 1.97564923027554e+23 after 250 iters; diff.= 504806770300944384
+Minimal Triple cosine = -0.696419315425144
+f= 1.97543954166621e+23 after 300 iters; diff.= 351040412753854464
+f= 1.97528942063786e+23 after 350 iters; diff.= 258423939846373376
+Minimal Triple cosine = -0.732812560531314
+f= 1.97517653734776e+23 after 400 iters; diff.= 198313606943604736
+> 
+> ##  With constraints
+> try(res <- cp_int2(va3way, ncomp=2, const="orth"))
+> try(res <- cp_int2(va3way, ncomp=2, const=c("orth", "orth")))
+> try(res <- cp_int2(va3way, ncomp=2, const="zerocor"))
 > 
 > ## Rejected values of parameter 'crit'
 > try(res <- Parafac(va3way, crit=c(1:10)))       # length different than 1
@@ -458,4 +585,4 @@ Error in cp_als(X, ncomp = ncomp, const = const, conv = conv, start = start,  :
 > 
 > proc.time()
    user  system elapsed 
-   3.65    0.39    4.71 
+   1.85    0.15    2.04 

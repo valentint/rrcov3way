@@ -1,0 +1,63 @@
+
+R Under development (unstable) (2024-10-01 r87205 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ## this will render the output independent from the version of the package
+> suppressPackageStartupMessages(library(rrcov3way))
+> 
+> ## IGNORE_RDIFF_BEGIN
+> ##
+> ##  ...
+> ##
+> ## IGNORE_RDIFF_END
+> 
+> ##  cp_gen() =================================================
+> try(xdat <- cp_gen(nsim=1, eps=0, type="bl"))           # wrong eps-type combination
+Error in cp_gen(nsim = 1, eps = 0, type = "bl") : 
+  Incorrect type of outliers specified for eps==0. Must be type='none'!
+> try(xdat <- cp_gen(nsim=1, eps=0.2, type="none"))       # wrong eps-type combination
+Error in cp_gen(nsim = 1, eps = 0.2, type = "none") : 
+  Type of outliers not specified for eps>0. Must be one of 'bl', 'gl' or 'og'!
+> try(xdat <- cp_gen(nsim=1, eps=0.2, type="xx"))         # wrong type
+Error in match.arg(type) : 
+  'arg' should be one of "none", "bl", "gl", "og"
+> 
+> xdat <- cp_gen(I=50, J=100, K=10, nsim=1, nf=2,
++      noise=0.15, noise1=0.10, Acol=TRUE, Bcol=TRUE, Ccol=TRUE,
++      congA=0.5, congB=0.5, congC=0.5,
++      eps=0.2, type="bl")
+> names(xdat)
+[1] "As"    "Bs"    "Cs"    "Xs"    "Os"    "param"
+> 
+> xdat <- cp_gen(nsim=1, eps=0, type="none")
+> xdat <- cp_gen(nsim=1, eps=0.2, type="gl")
+> xdat <- cp_gen(nsim=1, eps=0.2, type="og")
+> xdat <- cp_gen(nsim=1, eps=0.2, type="og", c1=2, c2=0.1)
+Warning message:
+In cp_gen(nsim = 1, eps = 0.2, type = "og", c1 = 2, c2 = 0.1) :
+  Bad leverage points are generated instead of residual outliers!
+> xdat <- cp_gen(nsim=1, eps=0.2, type="gl", c1=1, c2=0.2)
+Warning message:
+In cp_gen(nsim = 1, eps = 0.2, type = "gl", c1 = 1, c2 = 0.2) :
+  Bad leverage points are generated instead of good leverage points
+> 
+> 
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+   0.43    0.00    0.42 

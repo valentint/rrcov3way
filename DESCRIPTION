@@ -1,6 +1,6 @@
 Package: rrcov3way
-Version: 0.6-1
-VersionNote: Released 0.5-0 on 2024-02-06 on CRAN
+Version: 0.6-2
+VersionNote: Released 0.6-1 on 2025-07-05 on CRAN
 Title: Robust Methods for Multiway Data Analysis, Applicable also for
         Compositional Data
 Authors@R: c(person("Valentin", "Todorov", role = c("aut", "cre"), email = "valentin@todorov.at", comment=c(ORCID = "0000-0003-4215-0245"))

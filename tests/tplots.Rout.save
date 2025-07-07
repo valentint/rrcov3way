@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2023-12-02 r85657 ucrt) -- "Unsuffered Consequences"
-Copyright (C) 2023 The R Foundation for Statistical Computing
+R Under development (unstable) (2024-10-01 r87205 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -42,6 +42,15 @@ Tucker3(X = va3way)
 Tucker3 analysis with  2 x 2 x 2  components.
 Fit value: 1.974345e+23 
 Fit percentage: 94.18 %
+> (res_clr <- Tucker3(va3way, coda.transform="clr"))
+Call:
+Tucker3(X = va3way, coda.transform = "clr")
+
+
+Tucker3 analysis with  2 x 2 x 2  components.
+Fit value: 489.8535 
+Fit percentage: 89.53 %
+clr-transformed
 > print(res$fit)
 [1] 1.974345e+23
 > print(res$A)
@@ -113,6 +122,8 @@ YEM -0.0014638760 -0.0092073079
 2011 0.3456967 -0.31043574
 2012 0.3223007 -0.35412981
 2013 0.3329100 -0.30934612
+> 
+> res2 <- reflect(res_clr, mode="C", rsign=-1)
 > ## IGNORE_RDIFF_END
 > 
 > ## Distance-distance plot
@@ -144,10 +155,19 @@ In .compplot.tucker3(x, ...) :
 > 
 > ## Joint biplot
 > plot(res, which="jbplot", main="Joint biplot")
+> A.x.off <- A.y.off <- rep(0, nrow(res$A))
+> B.x.off <- B.y.off <- rep(0, nrow(res$B))
+> A.x.off[1] <- 0.01
+> A.y.off[1] <- 0.01
+> B.x.off[1] <- 0.01
+> B.y.off[1] <- 0.01
+> plot(res, which="jbplot", main="Joint biplot", A.x.off=A.x.off, A.y.off=A.y.off,
++     B.x.off=B.x.off, B.y.off=B.y.off)
 > plot(res1, which="jbplot", main="Joint biplot")             # reflected C
 > 
 > ## Trajectory
 > plot(res, which="tjplot", main="Trajectory biplot")
+> plot(res, which="tjplot", main="Trajectory biplot", longnames=FALSE)
 > plot(res, which="tjplot", choices=c(1:4), arrows=FALSE, main="Trajectory biplot")
 > plot(res1, which="tjplot", main="Trajectory biplot")        # reflected C
 > 
@@ -257,4 +277,4 @@ Error in rrcov3way:::.ddplot(cp, id.n = -1) : 'id.n' must be in {1,..,23}
 > 
 > proc.time()
    user  system elapsed 
-   0.26    0.03    0.81 
+   1.07    0.06    1.12 
