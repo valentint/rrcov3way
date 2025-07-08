@@ -13,6 +13,8 @@ coverage](https://codecov.io/gh/valentint/rrcov3way/branch/master/graph/badge.sv
 [![downloads](https://cranlogs.r-pkg.org/badges/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rrcov3way)](https://cran.r-project.org/package=rrcov3way)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Codecov test
+coverage](https://codecov.io/gh/valentint/rrcov3way/graph/badge.svg)](https://app.codecov.io/gh/valentint/rrcov3way)
 <!-- badges: end -->
 
 The package provides robust methods for multiway data analysis by means
@@ -20,7 +22,7 @@ of *Parafac* and *Tucker 3* models (Engelen and Hubert (2011)
 [doi:10.1016/j.aca.2011.04.043](https://doi.org/10.1016/j.aca.2011.04.043)).
 Robust versions for compositional data are also provided (Gallo (2015)
 [doi:10.1080/03610926.2013.798664](https://doi.org/10.1080/03610926.2013.798664),
-Di Palma et al. (2018)
+Di Palma et al. (2018)
 [doi:10.1080/02664763.2017.1381669](https://doi.org/10.1080/02664763.2017.1381669)).
 
 Several optimization methods alternative to ALS are available (Simonacci
@@ -66,7 +68,7 @@ proportion for the world as a whole.
 ##  23 countries x 6 industries x 7 years
 library(rrcov3way)
 #> Robust Methods for Multiway Data Analysis, Applicable also for
-#> Compositional Data (version 0.2-5)
+#> Compositional Data (version 0.6-2)
 #> 
 #> Attaching package: 'rrcov3way'
 #> The following object is masked from 'package:stats':
