@@ -48,5 +48,5 @@ Find the Tucker's coefficient of congruence between two sets of factor loadings.
 L.R Tucker (1951). A method for synthesis of factor analysis studies. Personnel Research Section Report No. 984. Department of the Army, Washington, DC.
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}
+Valentin Todorov, \email{<valentin@todorov.at>}
 }

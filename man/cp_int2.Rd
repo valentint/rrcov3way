@@ -122,5 +122,5 @@ Todorov, V. and Simonacci, V. and Gallo, M. and Trendafilov, N. (2023). A novel
  \emph{Econometrics and Statistics}. In press.
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}; Violetta Simonacci, \email{violetta.simonacci@unina.it}
+Valentin Todorov, \email{<valentin@todorov.at>}; Violetta Simonacci, \email{violetta.simonacci@unina.it}
 }

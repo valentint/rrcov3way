@@ -23,7 +23,7 @@ Three way array
 H.A.L. Kiers (2000). Towards a standardized notation and terminology in multiway analysis.  \emph{Journal of Chemometrics}, 14: 105--122.
 }
 \author{
-Valentin Todorov \email{valentin.todorov@chello.at} and
+Valentin Todorov \email{<valentin@todorov.at>} and
 Maria Anna Di Palma \email{madipalma@unior.it} and
 Michele Gallo \email{mgallo@unior.it}
 }

@@ -41,5 +41,5 @@ all.equal(mtrace(a \%*\% b), mtrace(b \%*\% a))
 all.equal(mtrace(a), mtrace(b \%*\% a \%*\% solve(b)))
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}
+Valentin Todorov, \email{<valentin@todorov.at>}
 }

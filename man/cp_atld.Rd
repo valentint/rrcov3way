@@ -89,5 +89,5 @@ H.-L. Wu, M. Shibukawa, K. Oguma, An alternating trilinear decomposition
  \emph{Journal of Chemometrics} \bold{12} (1998) 1--26.
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}; Violetta Simonacci, \email{violetta.simonacci@unina.it}
+Valentin Todorov, \email{<valentin@todorov.at>}; Violetta Simonacci, \email{violetta.simonacci@unina.it}
 }

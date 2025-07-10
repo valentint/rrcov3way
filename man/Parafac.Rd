@@ -105,7 +105,7 @@ An object of class "parafac" which is basically a list with components:
         for compositional data analysis. \emph{Mathematical Geology}, 35(3): 279-300
 }
 \author{
-Valentin Todorov \email{valentin.todorov@chello.at} and 
+Valentin Todorov \email{<valentin@todorov.at>} and 
 Maria Anna Di Palma \email{madipalma@unior.it} and
 Michele Gallo \email{mgallo@unior.it}
 }

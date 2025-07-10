@@ -119,5 +119,5 @@ Lawson CL, Hanson RJ (1974). Solving Least Squares Problems.
  Prentice Hall, Englewood Cliffs, NJ.
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}
+Valentin Todorov, \email{<valentin@todorov.at>}
 }

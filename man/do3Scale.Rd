@@ -51,7 +51,7 @@ a scale vector and the mode in which the data were centered/scaled.
         Theory and applications (Vol. 2), DSWO press.
 }
 \author{
-Valentin Todorov \email{valentin.todorov@chello.at} and
+Valentin Todorov \email{<valentin@todorov.at>} and
 Maria Anna Di Palma \email{madipalma@unior.it} and
 Michele Gallo \email{mgallo@unior.it}
 }

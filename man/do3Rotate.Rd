@@ -39,5 +39,5 @@ Computes \emph{varimax} rotation of the core and component matrix of a Tucker3 m
 
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}
+Valentin Todorov, \email{<valentin@todorov.at>}
 }

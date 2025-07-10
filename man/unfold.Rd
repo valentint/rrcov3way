@@ -23,7 +23,7 @@ item Mode C: \code{A}-mode entities nested within \code{B}-mode entities (all th
 \references{H.A.L. Kiers (2000). Towards a standardized notation and terminology in multiway analysis. \emph{Journal of Chemometrics 14:105--122}.}
 
 \author{
-Valentin Todorov \email{valentin.todorov@chello.at}
+Valentin Todorov \email{<valentin@todorov.at>}
 }
 \examples{
 

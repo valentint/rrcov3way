@@ -61,7 +61,7 @@
         in probability and statistics. Hoboken NJ, Wiley.
 }
 \author{
-Valentin Todorov \email{valentin.todorov@chello.at} and
+Valentin Todorov \email{<valentin@todorov.at>} and
 Maria Anna Di Palma \email{madipalma@unior.it} and
 Michele Gallo \email{mgallo@unior.it}
 }

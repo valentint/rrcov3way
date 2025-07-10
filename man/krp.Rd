@@ -34,5 +34,5 @@ Khatri, C. G., and Rao, C. Radhakrishna (1968).
  	Smilde, A., Bro R. and Gelardi, P. (2004). Multi-way Analysis: Applications in Chemical Sciences, Chichester:Wiley
 }
 \author{
-Valentin Todorov, \email{valentin.todorov@chello.at}
+Valentin Todorov, \email{<valentin@todorov.at>}
 }
